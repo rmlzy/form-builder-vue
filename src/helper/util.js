@@ -24,6 +24,14 @@ export default {
 
 export const genUuid = () => uuidv4();
 
+export const genRules = (option) => {
+  const rules = [];
+  if (option.required) {
+    rules.push({ required: true, message: "必填项" });
+  }
+  return rules;
+};
+
 export const getToolsComponent = () => {
   const components = {};
   const metas = Object.keys(Tools).filter((name) => !name.includes("Meta") && !name.includes("Text"));

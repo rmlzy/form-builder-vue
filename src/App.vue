@@ -1,58 +1,59 @@
 <template>
-  <div class="layout" @click="() => setActiveUuid('')">
-    <div class="layout__hd">
-      <el-button size="small" type="primary" @click="() => setSchemaVisible(true)">查看Schema</el-button>
-      <el-button size="small" type="primary" @click="() => setCodeVisible(true)">查看Code</el-button>
-      <el-button size="small" type="danger" @click="clearSchema">清空</el-button>
-    </div>
+  <el-form>
+    <div class="layout" @click="() => setActiveUuid('')">
+      <div class="layout__hd">
+        <el-button size="small" type="primary" @click="() => setSchemaVisible(true)">查看Schema</el-button>
+        <el-button size="small" type="primary" @click="() => setCodeVisible(true)">查看Code</el-button>
+        <el-button size="small" type="danger" @click="clearSchema">清空</el-button>
+      </div>
 
-    <div class="layout__sd">
-      <draggable
-        :list="tools"
-        v-bind="{ group: { name: 'tool', pull: 'clone', put: false }, sort: false, ghostClass: 'ghost' }"
-      >
-        <div class="tool" v-for="(tool, index) in tools" :key="index">
-          <div class="tool__name">
-            <b>{{ tool.component | ignoreFbPrefix }}</b>
-            <span>{{ tool.componentName }}</span>
+      <div class="layout__sd">
+        <draggable
+          :list="tools"
+          v-bind="{ group: { name: 'tool', pull: 'clone', put: false }, sort: false, ghostClass: 'ghost' }"
+        >
+          <div class="tool" v-for="(tool, index) in tools" :key="index">
+            <div class="tool__name">
+              <b>{{ tool.component | ignoreFbPrefix }}</b>
+              <span>{{ tool.componentName }}</span>
+            </div>
           </div>
-        </div>
-      </draggable>
+        </draggable>
+      </div>
+      <div class="layout__bd">
+        <draggable
+          class="stage"
+          v-model="schema"
+          v-bind="{ group: 'tool', ghostClass: 'sortable__ghost', animation: 200, handle: '.editable__handle' }"
+          @add="addBlock"
+        >
+          <editable
+            v-for="(block, index) in schema"
+            :key="index"
+            :active-uuid="activeUuid"
+            :config="block"
+            @choose="chooseBlock"
+            @remove="removeBlock"
+            @edit="editBlock"
+          />
+        </draggable>
+      </div>
+
+      <el-dialog title="Schema" :visible.sync="schemaVisible" width="70%" append-to-body>
+        <pre><code>{{ schemaStr }}</code></pre>
+        <span slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="downloadSchema">下载</el-button>
+        </span>
+      </el-dialog>
+
+      <el-dialog title="Code" :visible.sync="codeVisible" width="70%" append-to-body>
+        <pre><code>{{ code.text }}</code></pre>
+        <span slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="downloadVue">下载</el-button>
+        </span>
+      </el-dialog>
     </div>
-
-    <div class="layout__bd">
-      <draggable
-        class="stage"
-        v-model="schema"
-        v-bind="{ group: 'tool', ghostClass: 'sortable__ghost', animation: 200, handle: '.editable__handle' }"
-        @add="addBlock"
-      >
-        <editable
-          v-for="(block, index) in schema"
-          :key="index"
-          :active-uuid="activeUuid"
-          :config="block"
-          @choose="chooseBlock"
-          @remove="removeBlock"
-          @edit="editBlock"
-        />
-      </draggable>
-    </div>
-
-    <el-dialog title="Schema" :visible.sync="schemaVisible" width="70%" append-to-body>
-      <pre><code>{{ schemaStr }}</code></pre>
-      <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="downloadSchema">下载</el-button>
-      </span>
-    </el-dialog>
-
-    <el-dialog title="Code" :visible.sync="codeVisible" width="70%" append-to-body>
-      <pre><code>{{ code.text }}</code></pre>
-      <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="downloadVue">下载</el-button>
-      </span>
-    </el-dialog>
-  </div>
+  </el-form>
 </template>
 
 <script>
