@@ -41,19 +41,26 @@
 
     <el-dialog title="Schema" :visible.sync="schemaVisible" width="70%" append-to-body>
       <pre><code>{{ schemaStr }}</code></pre>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="downloadSchema">下载</el-button>
+      </span>
     </el-dialog>
 
     <el-dialog title="Code" :visible.sync="codeVisible" width="70%" append-to-body>
-      <pre><code>{{ code }}</code></pre>
+      <pre><code>{{ code.text }}</code></pre>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="downloadVue">下载</el-button>
+      </span>
     </el-dialog>
   </div>
 </template>
 
 <script>
 import draggable from "vuedraggable";
+import fileDownload from "js-file-download";
 import editable from "./editable";
 import { ignoreFbPrefix } from "./helper/filters";
-import { findAndEdit, findAndRemove, genUuid, safeStringify, getToolsMeta, schema2code } from "./helper/util";
+import { findAndEdit, findAndRemove, genUuid, safeStringify, getToolsMeta, formatCode } from "./helper/util";
 
 export default {
   name: "App",
@@ -71,7 +78,7 @@ export default {
       tools: getToolsMeta(),
       activeUuid: "",
       codeVisible: false,
-      code: "",
+      code: {},
     };
   },
   computed: {
@@ -89,9 +96,22 @@ export default {
     setSchemaVisible(schemaVisible) {
       this.schemaVisible = schemaVisible;
     },
-    setCodeVisible(codeVisible) {
+    async setCodeVisible(codeVisible) {
       this.codeVisible = codeVisible;
-      this.code = codeVisible ? schema2code(this.schema) : "";
+      if (codeVisible) {
+        const res = await formatCode(this.schema);
+        if (res.success) {
+          this.code = res.data;
+        }
+      } else {
+        this.code = {};
+      }
+    },
+    downloadSchema() {
+      fileDownload(safeStringify(this.schema), "schema.json");
+    },
+    downloadVue() {
+      fileDownload(this.code.text, `${this.code.uuid}.vue`);
     },
     chooseBlock({ uuid }) {
       this.setActiveUuid(uuid);

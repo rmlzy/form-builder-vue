@@ -1,6 +1,26 @@
 import _ from "lodash";
+import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import * as Tools from "../tools/index";
+
+const _genVueFile = (code) => {
+  return `
+<template>
+  <div>
+  ${code}
+  </div>
+</template>
+
+<script>
+export default {
+  name: "",
+  data() {
+    return {}
+  },
+  methods: {},
+};
+</script>`;
+};
 
 export const genUuid = () => uuidv4();
 
@@ -27,7 +47,7 @@ export const schema2code = (schema) => {
   schema.forEach((block) => {
     codes.push(getToolText(block));
   });
-  return codes.join("\n");
+  return _genVueFile(codes.join("\n"));
 };
 
 export const safeStringify = (json) => {
@@ -118,4 +138,13 @@ export const props2Text = (props) => {
     console.log(`key: ${key}, value: ${value} will be ignore!`);
   }
   return texts.join(" ");
+};
+
+export const formatCode = (schema) => {
+  const code = schema2code(schema);
+  return axios({
+    method: "POST",
+    url: "/api/builder/format",
+    data: { code, type: "vue" },
+  }).then((res) => res.data);
 };
