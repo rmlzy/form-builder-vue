@@ -1,5 +1,5 @@
 <template>
-  <el-drawer title="Input 配置" size="60%" :visible.sync="visible" append-to-body :before-close="beforeClose">
+  <el-drawer title="Select 配置" size="60%" :visible.sync="visible" append-to-body :before-close="beforeClose">
     <el-form ref="form" :model="formData" :rules="rules" label-position="top" size="small">
       <el-row :gutter="20">
         <el-col :span="12">
@@ -15,13 +15,6 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="类型" prop="type">
-            <el-select v-model="formData.type" placeholder="请选择" style="width: 100%;">
-              <el-option v-for="item in typeList" :key="item.value" :label="item.label" :value="item.value" />
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
           <el-form-item label="尺寸" prop="size">
             <el-radio-group v-model="formData.size">
               <el-radio label="medium">默认</el-radio>
@@ -30,20 +23,12 @@
             </el-radio-group>
           </el-form-item>
         </el-col>
-      </el-row>
-      <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="最大长度" prop="maxlength">
-            <el-input-number style="width: 100%;" v-model="formData.maxlength" :min="0" :step="1" step-strictly />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="最小长度" prop="minlength">
-            <el-input-number style="width: 100%;" v-model="formData.minlength" :min="0" :step="1" step-strictly />
+          <el-form-item label="是否必填" prop="required">
+            <el-switch v-model="formData.required" />
           </el-form-item>
         </el-col>
       </el-row>
-
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item label="占位文本" prop="placeholder">
@@ -58,41 +43,62 @@
       </el-row>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="是否必填" prop="required">
-            <el-switch v-model="formData.required" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="是否显示输入字数统计" prop="show-word-limit">
-            <el-switch v-model="formData['show-word-limit']" />
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
           <el-form-item label="是否可清空" prop="clearable">
             <el-switch v-model="formData.clearable" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="是否显示切换密码图标" prop="show-password">
-            <el-switch v-model="formData['show-password']" />
+          <el-form-item label="是否可搜索" prop="filterable">
+            <el-switch v-model="formData.filterable" />
           </el-form-item>
         </el-col>
       </el-row>
+      <el-form-item label="选项">
+        <el-row :gutter="20">
+          <el-col :span="3">排序</el-col>
+          <el-col :span="8">名称</el-col>
+          <el-col :span="8">值</el-col>
+        </el-row>
+        <draggable :list="formData.childes" handle=".sortable__handle" ghost-class="sortable__ghost">
+          <el-row :gutter="20" v-for="(child, index) in formData.childes" :key="index" class="sortable">
+            <el-col :span="3">
+              <div class="sortable__handle">
+                <i class="el-icon-s-operation"></i>
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <el-input style="width: 80%;" size="mini" v-model="child.label" />
+            </el-col>
+            <el-col :span="8">
+              <el-input style="width: 80%;" size="mini" v-model="child.value" />
+            </el-col>
+            <el-col :span="4">
+              <el-button size="mini" plain type="danger" @click="() => removeChild(index)">删除</el-button>
+            </el-col>
+          </el-row>
+        </draggable>
+      </el-form-item>
+      <el-button size="small" style="width: 100%;" type="default" @click="addChild">
+        <i class="el-icon-plus"></i>
+        <span>新增</span>
+      </el-button>
     </el-form>
     <el-button type="primary" @click="save">保存</el-button>
   </el-drawer>
 </template>
 
 <script>
+import draggable from "vuedraggable";
 import _ from "lodash";
 
 export default {
-  name: "FbInputEdit",
+  name: "FbSelectEdit",
   props: {
     visible: Boolean,
     config: Object,
+  },
+  components: {
+    draggable,
   },
   data() {
     return {
@@ -100,15 +106,7 @@ export default {
       rules: {
         label: [{ required: true, message: "必填项" }],
         name: [{ required: true, message: "必填项" }],
-        type: [{ required: true, message: "必填项" }],
       },
-      typeList: [
-        { value: "text", label: "文字" },
-        { value: "email", label: "邮箱" },
-        { value: "password", label: "密码" },
-        { value: "color", label: "颜色" },
-        { value: "url", label: "URL" },
-      ],
     };
   },
   watch: {
@@ -117,6 +115,12 @@ export default {
     },
   },
   methods: {
+    addChild() {
+      this.formData.childes.push({ text: "" });
+    },
+    removeChild(index) {
+      this.formData.childes.splice(index, 1);
+    },
     save() {
       this.$refs.form.validate((valid) => {
         if (!valid) return;

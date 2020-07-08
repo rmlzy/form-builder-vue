@@ -1,5 +1,5 @@
 <template>
-  <el-drawer title="TextArea 配置" size="50%" :visible.sync="visible" append-to-body :before-close="beforeClose">
+  <el-drawer title="TextArea 配置" size="60%" :visible.sync="visible" append-to-body :before-close="beforeClose">
     <el-form ref="form" :model="formData" :rules="rules" label-position="top" size="small">
       <el-row :gutter="20">
         <el-col :span="12">

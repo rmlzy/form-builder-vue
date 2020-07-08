@@ -1,5 +1,5 @@
 <template>
-  <el-drawer title="Breadcrumb 配置" size="50%" :visible.sync="visible" append-to-body :before-close="beforeClose">
+  <el-drawer title="Breadcrumb 配置" size="60%" :visible.sync="visible" append-to-body :before-close="beforeClose">
     <el-form ref="form" :model="formData" :rules="rules" label-position="top" size="small">
       <el-row :gutter="20">
         <el-col :span="12">
@@ -20,7 +20,7 @@
             <el-input size="mini" v-model="child.text" />
           </el-col>
           <el-col :span="4">
-            <el-button size="mini" type="danger" @click="() => removeChild(index)">删除</el-button>
+            <el-button size="mini" plain type="danger" @click="() => removeChild(index)">删除</el-button>
           </el-col>
         </el-row>
       </draggable>
@@ -52,12 +52,6 @@ export default {
       rules: {
         separator: [{ required: true, message: "必填项" }],
       },
-      typeList: [
-        { value: "success", label: "成功提示" },
-        { value: "warning", label: "警告提示" },
-        { value: "info", label: "消息提示" },
-        { value: "error", label: "错误提示" },
-      ],
     };
   },
   watch: {
