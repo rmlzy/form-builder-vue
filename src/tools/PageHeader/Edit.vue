@@ -1,6 +1,6 @@
 <template>
   <el-drawer title="PageHeader 配置" size="50%" :visible.sync="visible" append-to-body :before-close="beforeClose">
-    <el-form ref="form" :model="formData" :rules="rules" label-position="top">
+    <el-form ref="form" :model="formData" :rules="rules" label-position="top" size="small">
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item label="标题" prop="title">

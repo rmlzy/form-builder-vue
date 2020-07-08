@@ -1,13 +1,7 @@
 <template>
   <el-form>
     <div class="layout" @click="() => setActiveUuid('')">
-      <div class="layout__hd">
-        <el-button size="small" type="primary" @click="() => setSchemaVisible(true)">查看Schema</el-button>
-        <el-button size="small" type="primary" @click="() => setCodeVisible(true)">查看Code</el-button>
-        <el-button size="small" type="danger" @click="clearSchema">清空</el-button>
-      </div>
-
-      <div class="layout__sd">
+      <div class="layout__left">
         <draggable
           :list="tools"
           v-bind="{ group: { name: 'tool', pull: 'clone', put: false }, sort: false, ghostClass: 'ghost' }"
@@ -20,7 +14,13 @@
           </div>
         </draggable>
       </div>
-      <div class="layout__bd">
+
+      <div class="layout__mid">
+        <div class="layout__mid__hd">
+          <el-button size="small" plain @click="() => setSchemaVisible(true)">查看Schema</el-button>
+          <el-button size="small" plain @click="() => setCodeVisible(true)">查看Code</el-button>
+          <el-button size="small" plain type="danger" @click="clearSchema">清空</el-button>
+        </div>
         <draggable
           class="stage"
           v-model="schema"
@@ -120,6 +120,10 @@ export default {
     addBlock({ newIndex, to }) {
       const block = this.schema[newIndex];
       const uuid = `${block.component}__${genUuid()}`.replace("fb-", "");
+      // 为表单控件生成随机的字段名
+      if (block.name !== undefined) {
+        block.name = genUuid();
+      }
       this.$set(this.schema, newIndex, { ...block, uuid });
     },
     removeBlock({ uuid }) {

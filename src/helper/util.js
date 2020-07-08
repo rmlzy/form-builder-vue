@@ -34,15 +34,16 @@ export const genRules = (option) => {
 
 export const getToolsComponent = () => {
   const components = {};
-  const metas = Object.keys(Tools).filter((name) => !name.includes("Meta") && !name.includes("Text"));
+  const metas = Object.keys(Tools).filter((name) => !name.endsWith("Meta") && !name.endsWith("Text"));
   metas.forEach((name) => {
     components[name] = Tools[name];
   });
+  console.log(components);
   return components;
 };
 
 export const getToolsMeta = () => {
-  const metas = Object.keys(Tools).filter((name) => name.includes("Meta"));
+  const metas = Object.keys(Tools).filter((name) => name.endsWith("Meta"));
   return metas.map((name) => Tools[name]);
 };
 
