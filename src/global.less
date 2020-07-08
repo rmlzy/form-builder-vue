@@ -1,0 +1,247 @@
+* {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, segoe ui, Roboto, helvetica neue, Arial, noto sans, sans-serif,
+  apple color emoji, segoe ui emoji, segoe ui symbol, noto color emoji;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #1f2f3d;
+}
+
+.text-danger {
+  color: #f56c6c;
+}
+
+.el-drawer__title {
+  margin-bottom: 0;
+}
+
+.el-drawer__header {
+  color: #1f2f3d;
+  font-size: 16px;
+}
+
+.el-drawer__body {
+  padding: 20px;
+
+  .el-form-item__label {
+    line-height: 1;
+  }
+
+  .el-form {
+    margin-bottom: 40px;
+  }
+}
+
+.layout {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  padding: 50px 310px 10px 10px;
+
+  &__hd {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px 310px 8px 20px;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  &__sd {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 300px;
+    height: 100%;
+    padding-top: 50px;
+    padding-right: 10px;
+    overflow-y: scroll;
+    background: #fff;
+  }
+
+  &__bd {
+    width: 100%;
+    height: 100%;
+
+    & > div {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
+.stage {
+  width: 100%;
+  height: 100%;
+  border: 1px solid #ddd;
+  background: #fff;
+  padding: 10px;
+  margin: 0 auto;
+  box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+
+  &__sort {
+    &__ghost {
+      position: relative;
+
+      &:before {
+        position: absolute;
+        top: -2px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        content: "";
+        background: red;
+      }
+    }
+
+    &__drag {
+      opacity: 0.6;
+    }
+  }
+}
+
+.tool {
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+  list-style: none;
+  margin-bottom: 5px;
+  padding: 10px 15px;
+  border: 1px dashed #ddd;
+
+  &__icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  &__name {
+    b {
+      margin-right: 5px;
+    }
+  }
+}
+
+.sortable {
+  margin-bottom: 10px;
+
+  &__handle {
+    display: flex;
+    align-items: center;
+    height: 28px;
+    cursor: move;
+  }
+
+  &__ghost {
+    position: relative;
+
+    &:before {
+      position: absolute;
+      top: -2px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      content: "";
+      background: red;
+    }
+  }
+
+  &__drag {
+    outline: 1px dotted #0170fe;
+  }
+}
+
+.editable {
+  position: relative;
+  cursor: pointer;
+  outline: 2px solid transparent;
+  min-height: 30px;
+  padding: 8px 1px;
+
+  &:after {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: block;
+    z-index: 8;
+    content: "";
+  }
+
+  &.canDrop {
+    &:after {
+      display: none;
+    }
+
+    &.active {
+      outline-color: #e6a23c;
+      background: transparent;
+
+      & > .editable__handle,
+      & > .editable__actions {
+        background: #e6a23c;
+      }
+    }
+  }
+
+  &.active {
+    outline-color: #409eff;
+    background: #ecf5ff;
+
+    & > .editable__handle,
+    & > .editable__actions {
+      display: flex;
+    }
+  }
+
+  &__handle {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 20px;
+    height: 20px;
+    font-size: 14px;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    background: #409eff;
+    z-index: 10;
+    cursor: move;
+  }
+
+  &__actions {
+    display: none;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    align-items: center;
+    justify-content: space-between;
+    color: #fff;
+    background: #409eff;
+    font-size: 17px;
+    padding: 5px 5px;
+    z-index: 10;
+
+    i {
+      margin: 0 5px;
+    }
+  }
+}
