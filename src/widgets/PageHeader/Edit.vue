@@ -29,7 +29,7 @@ export default {
   },
   data() {
     return {
-      formData: {},
+      formData: _.cloneDeep(this.config),
       rules: {
         // title: [{ required: true, message: "必填项" }],
       },
@@ -48,7 +48,7 @@ export default {
       });
     },
     beforeClose() {
-      this.$emit("before-close", {});
+      this.$emit("cancel", {});
     },
   },
 };

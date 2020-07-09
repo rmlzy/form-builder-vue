@@ -45,7 +45,7 @@ export default {
   },
   data() {
     return {
-      formData: {},
+      formData: _.cloneDeep(this.config),
     };
   },
   watch: {
@@ -61,7 +61,7 @@ export default {
       });
     },
     beforeClose() {
-      this.$emit("before-close", {});
+      this.$emit("cancel", {});
     },
   },
 };

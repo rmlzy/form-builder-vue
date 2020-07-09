@@ -12,6 +12,11 @@ body {
   color: #1f2f3d;
 }
 
+.clearfix {
+  overflow: auto;
+  zoom: 1;
+}
+
 .text-danger {
   color: #f56c6c;
 }
@@ -36,6 +41,20 @@ body {
   .el-form {
     margin-bottom: 40px;
   }
+}
+
+.form-highlight {
+  min-height: 80px;
+  border: 2px dotted #e6a23c;
+}
+
+.row-highlight {
+  min-height: 30px;
+}
+
+.col-highlight {
+  min-height: 30px;
+  border: 2px dotted #e6a23c;
 }
 
 .layout {
@@ -70,18 +89,22 @@ body {
       width: 100%;
       padding: 10px;
     }
+
+    &__bd {
+      height: 100%;
+      border: 1px solid #ddd;
+      box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.1);
+
+      & > .stage {
+        width: 100%;
+        height: 100%;
+      }
+    }
   }
 }
 
 .stage {
-  width: 100%;
-  height: 100%;
   background: #fff;
-  margin: 0 auto;
-  overflow-y: auto;
-  border: 1px solid #ddd;
-  padding: 8px;
-  box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.1);
 
   &__sort {
     &__ghost {
@@ -94,7 +117,7 @@ body {
         width: 100%;
         height: 2px;
         content: "";
-        background: red;
+        background: #f56c6c;
       }
     }
 
@@ -104,14 +127,14 @@ body {
   }
 }
 
-.tool {
+.widget {
   position: relative;
   cursor: pointer;
   user-select: none;
   list-style: none;
   margin-bottom: 5px;
   padding: 10px 15px;
-  border: 1px dashed #ddd;
+  background: #f4f4f5;
 
   &__icon {
     position: absolute;
@@ -153,7 +176,7 @@ body {
       width: 100%;
       height: 2px;
       content: "";
-      background: red;
+      background: #f56c6c;
     }
   }
 
@@ -165,45 +188,47 @@ body {
 .editable {
   position: relative;
   cursor: pointer;
-  outline: 2px solid transparent;
-  min-height: 30px;
-  padding: 1px 1px;
+  border: 2px solid transparent;
+  padding: 12px 0 0 0;
 
-  &:after {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    display: block;
-    z-index: 8;
-    content: "";
-  }
-
-  &.canDrop {
-    &:after {
-      display: none;
-    }
-
-    &.active {
-      outline-color: #e6a23c;
-      background: transparent;
-
-      & > .editable__handle,
-      & > .editable__actions {
-        background: #e6a23c;
-      }
-    }
-  }
+  //&:after {
+  //  position: absolute;
+  //  left: 0;
+  //  right: 0;
+  //  top: 0;
+  //  bottom: 0;
+  //  display: block;
+  //  z-index: 8;
+  //  content: "";
+  //}
 
   &.active {
-    outline-color: #409eff;
+    border-color: #409eff;
     background: #ecf5ff;
 
     & > .editable__handle,
     & > .editable__actions {
       display: flex;
     }
+  }
+
+  &__bd {
+    padding: 0 5px;
+
+    .el-form-item {
+      margin-bottom: 0;
+    }
+  }
+
+  &__name {
+    font-size: 10px;
+    color: green;
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: inline-block;
+    z-index: 99;
+    line-height: 1;
   }
 
   &__handle {

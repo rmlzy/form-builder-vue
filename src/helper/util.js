@@ -1,7 +1,7 @@
 import _ from "lodash";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
-import * as Tools from "../tools/index";
+import * as Widgets from "../widgets/index";
 
 const _genVueFile = (code) => {
   return `
@@ -24,6 +24,8 @@ export default {
 
 export const genUuid = () => uuidv4();
 
+export const genWidgetUuid = (widgetName) => `${widgetName}__${genUuid()}`.replace("Fb", "");
+
 export const genRules = (option) => {
   const rules = [];
   if (option.required) {
@@ -32,26 +34,27 @@ export const genRules = (option) => {
   return rules;
 };
 
-export const getToolsComponent = () => {
-  const components = {};
-  const metas = Object.keys(Tools).filter((name) => !name.endsWith("Meta") && !name.endsWith("Text"));
+export const getWidgets = () => {
+  const widgets = {};
+  const metas = Object.keys(Widgets).filter((name) => !name.endsWith("Meta") && !name.endsWith("Text"));
   metas.forEach((name) => {
-    components[name] = Tools[name];
+    widgets[name] = Widgets[name];
   });
-  console.log(components);
-  return components;
+  return widgets;
 };
 
-export const getToolsMeta = () => {
-  const metas = Object.keys(Tools).filter((name) => name.endsWith("Meta"));
-  return metas.map((name) => Tools[name]);
+export const getWidgetsMeta = () => {
+  const metas = Object.keys(Widgets).filter((name) => name.endsWith("Meta"));
+  return metas.map((name) => Widgets[name]);
 };
+
+export const getWidgetMeta = (widgetName) => Widgets[`${widgetName}Meta`];
 
 export const schema2code = (schema) => {
   const codes = [];
   const getToolText = (option) => {
-    const textFuc = `${option.component}Text`;
-    return Tools[textFuc](option);
+    const textFuc = `${option.widget}Text`;
+    return Widgets[textFuc](option);
   };
   schema.forEach((block) => {
     codes.push(getToolText(block));
@@ -69,51 +72,36 @@ export const safeStringify = (json) => {
   return str;
 };
 
-export const findAndEdit = (schema, uuid, newData) => {
+export const findAndEdit = (schema, uuid, config) => {
   schema = _.cloneDeep(schema);
-  schema = schema.map((block) => {
-    if (block.uuid === uuid) {
-      block = newData;
-    } else {
-      if (block.childes) {
-        block.childes = (block.childes || []).map((col) => {
-          if (col.uuid === uuid) {
-            col = newData;
-          } else {
-            if (col.childes) {
-              col.childes = (col.childes || []).map((cmpt) => {
-                if (cmpt.uuid === uuid) {
-                  cmpt = newData;
-                }
-                return cmpt;
-              });
-            }
-          }
-          return col;
-        });
+  const editChildesWithNewConfig = (childes, editedUuid, editedConfig) => {
+    return childes.map((child) => {
+      if (child.uuid === editedUuid) {
+        child = editedConfig;
+      } else {
+        if (_.isArray(child.childes)) {
+          child.childes = editChildesWithNewConfig(child.childes, editedUuid, editedConfig);
+        }
       }
-    }
-    return block;
-  });
-  return schema;
+      return child;
+    });
+  };
+  return editChildesWithNewConfig(schema, uuid, config);
 };
 
 export const findAndRemove = (schema, uuid) => {
   schema = _.cloneDeep(schema);
-  schema = schema.filter((block) => block.uuid !== uuid);
-  schema = schema.map((block) => {
-    if (_.isArray(block.childes)) {
-      block.childes = block.childes.filter((col) => col.uuid !== uuid);
-      block.childes = block.childes.map((col) => {
-        if (_.isArray(col.childes)) {
-          col.childes = col.childes.filter((cmpt) => cmpt.uuid !== uuid);
-        }
-        return col;
-      });
-    }
-    return block;
-  });
-  return schema;
+  const filterChildesWithoutUuid = (childes, removedUuid) => {
+    let newChildes = childes.filter((child) => child.uuid !== removedUuid);
+    newChildes = newChildes.map((child) => {
+      if (_.isArray(child.childes)) {
+        child.childes = filterChildesWithoutUuid(child.childes, removedUuid);
+      }
+      return child;
+    });
+    return newChildes;
+  };
+  return filterChildesWithoutUuid(schema, uuid);
 };
 
 /**

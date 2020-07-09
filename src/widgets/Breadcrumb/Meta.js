@@ -1,6 +1,6 @@
 export default {
-  component: "FbBreadcrumb",
-  componentName: "面包屑",
+  widget: "FbBreadcrumb",
+  widgetName: "面包屑",
   separator: "/",
   childes: [
     {

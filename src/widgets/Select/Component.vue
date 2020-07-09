@@ -8,7 +8,7 @@
       :clearable="config.clearable"
       :filterable="config.filterable"
     >
-      <el-option v-for="(item, index) in config.childes" :key="index" :label="item.label" :value="item.value" />
+      <el-option v-for="(item, index) in config.options" :key="index" :label="item.label" :value="item.value" />
     </el-select>
   </el-form-item>
 </template>

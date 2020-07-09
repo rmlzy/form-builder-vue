@@ -1,53 +1,70 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import { safeStringify, findAndEdit, findAndRemove } from "./helper/util";
+import _ from "lodash";
+import { safeStringify, findAndEdit, findAndRemove, getWidgetsMeta, genUuid, genWidgetUuid } from "./helper/util";
+
+const initWidget = (widget) => {
+  widget = _.cloneDeep(widget);
+  widget.uuid = genWidgetUuid(widget.widget);
+  if (widget.name !== undefined) {
+    widget.name = genUuid();
+  }
+  // 拖拽 Row 控件时, 初始化 Col
+  if (widget.widget === "FbRow") {
+    widget.childes = [
+      { widget: "FbCol", span: 12, uuid: genWidgetUuid("FbCol"), childes: [] },
+      { widget: "FbCol", span: 12, uuid: genWidgetUuid("FbCol"), childes: [] },
+    ];
+  }
+  return widget;
+};
+
+const initWidgets = () => {
+  const widgets = getWidgetsMeta();
+  return widgets.map((widget) => initWidget(widget));
+};
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   strict: process.env.NODE_ENV !== "production",
   state: () => ({
-    schema: [
-      {
-        component: "fb-title",
-        componentName: "标题1",
-        text: "这是一个标题1",
-        uuid: "1",
-      },
-      {
-        component: "fb-title",
-        componentName: "标题2",
-        text: "这是一个标题2",
-        uuid: "2",
-      },
-    ],
-    tools: [
-      {
-        component: "P",
-        componentName: "段落",
-        text: "这是一个段落",
-      },
-    ],
-    activeUuid: "",
+    schema: [],
+    widgets: initWidgets(),
+    selectedUuid: "",
+    editedUuid: "",
   }),
   getters: {
-    tools: (state) => state.tools,
+    widgets: (state) => state.widgets,
     schema: (state) => state.schema,
     schemaStr: (state) => safeStringify(state.schema),
-    activeUuid: (state) => state.activeUuid,
+    selectedUuid: (state) => state.selectedUuid,
+    editedUuid: (state) => state.editedUuid,
   },
   mutations: {
-    setActiveUuid(state, payload) {
+    setSchema(state, payload) {
+      const { schema } = payload;
+      state.schema = schema;
+    },
+    setSelectedUuid(state, payload) {
       const { uuid } = payload;
-      state.activeUuid = uuid;
+      state.selectedUuid = uuid;
     },
-    setBlockByUuid(state, payload) {
-      const { uuid, block } = payload;
-      state.schema = findAndEdit(state.schema, uuid, block);
+    setEditedUuid(state, payload) {
+      const { uuid } = payload;
+      state.editedUuid = uuid;
     },
-    removeBlockByUuid(state, payload) {
+    setWidget(state, payload) {
+      const { uuid, config } = payload;
+      state.schema = findAndEdit(state.schema, uuid, config);
+    },
+    removeWidget(state, payload) {
       const { uuid } = payload;
       state.schema = findAndRemove(state.schema, uuid);
+    },
+    setWidgetUuid(state, payload) {
+      const { index } = payload;
+      state.widgets[index] = initWidget(state.widgets[index]);
     },
   },
   actions: {},

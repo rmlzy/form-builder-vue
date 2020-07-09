@@ -1,5 +1,5 @@
 <template>
-  <el-drawer title="Input 配置" size="60%" :visible.sync="visible" append-to-body :before-close="beforeClose">
+  <el-drawer title="TextArea 配置" size="60%" :visible.sync="visible" append-to-body :before-close="beforeClose">
     <el-form ref="form" :model="formData" :rules="rules" label-position="top" size="small">
       <el-row :gutter="20">
         <el-col :span="12">
@@ -15,19 +15,8 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="类型" prop="type">
-            <el-select v-model="formData.type" placeholder="请选择" style="width: 100%;">
-              <el-option v-for="item in typeList" :key="item.value" :label="item.label" :value="item.value" />
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="尺寸" prop="size">
-            <el-radio-group v-model="formData.size">
-              <el-radio label="medium">默认</el-radio>
-              <el-radio label="small">小号</el-radio>
-              <el-radio label="mini">迷你</el-radio>
-            </el-radio-group>
+          <el-form-item label="输入框行数" prop="rows">
+            <el-input-number style="width: 100%;" v-model="formData.rows" :min="0" :step="1" step-strictly />
           </el-form-item>
         </el-col>
       </el-row>
@@ -43,7 +32,6 @@
           </el-form-item>
         </el-col>
       </el-row>
-
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item label="占位文本" prop="placeholder">
@@ -68,18 +56,6 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="是否可清空" prop="clearable">
-            <el-switch v-model="formData.clearable" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="是否显示切换密码图标" prop="show-password">
-            <el-switch v-model="formData['show-password']" />
-          </el-form-item>
-        </el-col>
-      </el-row>
     </el-form>
     <el-button type="primary" @click="save">保存</el-button>
   </el-drawer>
@@ -89,14 +65,14 @@
 import _ from "lodash";
 
 export default {
-  name: "FbInputEdit",
+  name: "FbTextAreaEdit",
   props: {
     visible: Boolean,
     config: Object,
   },
   data() {
     return {
-      formData: {},
+      formData: _.cloneDeep(this.config),
       rules: {
         label: [{ required: true, message: "必填项" }],
         name: [{ required: true, message: "必填项" }],
@@ -124,7 +100,7 @@ export default {
       });
     },
     beforeClose() {
-      this.$emit("before-close", {});
+      this.$emit("cancel", {});
     },
   },
 };

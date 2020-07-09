@@ -1,11 +1,11 @@
 export default {
-  component: "FbSelect",
-  componentName: "下拉框",
+  widget: "FbSelect",
+  widgetName: "下拉框",
   label: "下拉框",
   name: "",
   placeholder: "请选择",
   size: "small",
-  childes: [
+  options: [
     {
       label: "选项1",
       value: "option1",
