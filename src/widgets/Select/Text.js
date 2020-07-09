@@ -4,7 +4,7 @@ import { props2Text } from "../../helper/util";
 export default (option) => {
   const formItemProps = _.pick(option, ["label", "name", "required"]);
   const selectProps = _.pick(option, ["placeholder", "size", "clearable", "filterable"]);
-  const items = option.childes.map((child) => {
+  const items = option.options.map((child) => {
     const optionProps = {
       label: child.label,
       value: child.value,

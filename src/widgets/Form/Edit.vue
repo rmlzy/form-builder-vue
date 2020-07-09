@@ -1,48 +1,44 @@
 <template>
-  <el-drawer title="Form 配置" size="60%" :visible.sync="visible" append-to-body :before-close="beforeClose">
-    <el-form ref="form" :model="formData" :rules="rules" label-position="top" size="small">
+  <el-drawer title="Form 配置" size="50%" :visible.sync="visible" append-to-body :before-close="beforeClose">
+    <el-form ref="form" :model="formData" :rules="rules" label-position="top" size="small" label-suffix="：">
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="标题" prop="title">
-            <el-input v-model="formData.title"></el-input>
+          <el-form-item label="行内表单模式" prop="inline">
+            <el-switch v-model="formData.inline" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="主题" prop="type">
-            <el-select v-model="formData.type" placeholder="请选择" style="width: 100%;">
-              <el-option v-for="item in typeList" :key="item.value" :label="item.label" :value="item.value" />
-            </el-select>
+          <el-form-item label="表单域标签的后缀" prop="label-suffix">
+            <el-input v-model="formData['label-suffix']"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
+
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="是否可关闭" prop="closeable">
-            <el-switch v-model="formData.closable" />
+          <el-form-item label="尺寸" prop="size">
+            <el-radio-group v-model="formData.size">
+              <el-radio label="medium">默认</el-radio>
+              <el-radio label="small">小号</el-radio>
+              <el-radio label="mini">迷你</el-radio>
+            </el-radio-group>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="关闭按钮自定义文本" prop="close-text">
-            <el-switch v-model="formData['close-text']" />
+          <el-form-item label="表单域标签的位置" prop="label-position">
+            <el-radio-group v-model="formData['label-position']">
+              <el-radio label="top">上</el-radio>
+              <el-radio label="left">左</el-radio>
+              <el-radio label="right">右</el-radio>
+            </el-radio-group>
           </el-form-item>
         </el-col>
       </el-row>
+
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="展示图标" prop="show-icon">
-            <el-switch v-model="formData['show-icon']" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="文字是否居中" prop="center">
-            <el-switch v-model="formData.center" />
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="24">
-          <el-form-item label="辅助文字">
-            <el-input type="textarea" :rows="2" v-model="formData.description"></el-input>
+          <el-form-item label="表单域标签的宽度" prop="label-width">
+            <el-slider v-model="formData['label-width']" :min="0" :max="300"></el-slider>
           </el-form-item>
         </el-col>
       </el-row>
@@ -64,15 +60,8 @@ export default {
     return {
       formData: _.cloneDeep(this.config),
       rules: {
-        title: [{ required: true, message: "必填项" }],
-        type: [{ required: true, message: "必填项" }],
+        inline: [{ required: true, message: "必填项" }],
       },
-      typeList: [
-        { value: "success", label: "成功提示" },
-        { value: "warning", label: "警告提示" },
-        { value: "info", label: "消息提示" },
-        { value: "error", label: "错误提示" },
-      ],
     };
   },
   watch: {

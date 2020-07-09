@@ -1,6 +1,6 @@
 <template>
-  <el-drawer title="Divider 配置" size="60%" :visible.sync="visible" append-to-body :before-close="beforeClose">
-    <el-form ref="form" :model="formData" label-position="top" size="small">
+  <el-drawer title="Divider 配置" size="50%" :visible.sync="visible" append-to-body :before-close="beforeClose">
+    <el-form ref="form" :model="formData" label-position="top" size="small" label-suffix="：">
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item label="内容" prop="text">

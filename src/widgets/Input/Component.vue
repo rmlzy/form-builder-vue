@@ -8,7 +8,6 @@
       :placeholder="config.placeholder"
       :clearable="config.clearable"
       :show-password="config['show-password']"
-      :size="config.size"
     />
     <div v-if="config.extra">{{ config.extra }}</div>
   </el-form-item>

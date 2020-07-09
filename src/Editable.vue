@@ -4,8 +4,12 @@
       <i class="el-icon-s-operation"></i>
     </div>
     <div class="editable__actions">
-      <i class="el-icon-edit" @click="() => setVisible(true)"></i>
-      <i class="el-icon-delete text-danger" @click="onRemove"></i>
+      <el-tooltip class="item" effect="dark" content="编辑" placement="bottom">
+        <i class="el-icon-edit" @click="() => setVisible(true)"></i>
+      </el-tooltip>
+      <el-tooltip class="item" effect="dark" content="删除" placement="bottom">
+        <i class="el-icon-delete text-danger" @click="onRemove"></i>
+      </el-tooltip>
     </div>
     <div class="editable__name">{{ config.widgetName }} {{ config.uuid }}</div>
     <div class="editable__bd">

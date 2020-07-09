@@ -1,6 +1,6 @@
 <template>
-  <el-drawer title="Select 配置" size="60%" :visible.sync="visible" append-to-body :before-close="beforeClose">
-    <el-form ref="form" :model="formData" :rules="rules" label-position="top" size="small">
+  <el-drawer title="Select 配置" size="50%" :visible.sync="visible" append-to-body :before-close="beforeClose">
+    <el-form ref="form" :model="formData" :rules="rules" label-position="top" size="small" label-suffix="：">
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item label="标签" prop="label">
@@ -14,15 +14,6 @@
         </el-col>
       </el-row>
       <el-row :gutter="20">
-        <el-col :span="12">
-          <el-form-item label="尺寸" prop="size">
-            <el-radio-group v-model="formData.size">
-              <el-radio label="medium">默认</el-radio>
-              <el-radio label="small">小号</el-radio>
-              <el-radio label="mini">迷你</el-radio>
-            </el-radio-group>
-          </el-form-item>
-        </el-col>
         <el-col :span="12">
           <el-form-item label="是否必填" prop="required">
             <el-switch v-model="formData.required" />
@@ -41,7 +32,7 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-row>
+      <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item label="是否可清空" prop="clearable">
             <el-switch v-model="formData.clearable" />

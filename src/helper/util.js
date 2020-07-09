@@ -50,14 +50,15 @@ export const getWidgetsMeta = () => {
 
 export const getWidgetMeta = (widgetName) => Widgets[`${widgetName}Meta`];
 
+export const getWidgetText = (config) => {
+  const textFuc = `${config.widget}Text`;
+  return Widgets[textFuc](config);
+};
+
 export const schema2code = (schema) => {
   const codes = [];
-  const getToolText = (option) => {
-    const textFuc = `${option.widget}Text`;
-    return Widgets[textFuc](option);
-  };
   schema.forEach((block) => {
-    codes.push(getToolText(block));
+    codes.push(getWidgetText(block));
   });
   return _genVueFile(codes.join("\n"));
 };
@@ -130,6 +131,10 @@ export const props2Text = (props) => {
     }
     if (_.isString(value)) {
       texts.push(`${key}="${value}"`);
+      continue;
+    }
+    if (_.isNumber(value)) {
+      texts.push(`:${key}="${value}"`);
       continue;
     }
     console.log(`key: ${key}, value: ${value} will be ignore!`);

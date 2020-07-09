@@ -1,6 +1,5 @@
 export default {
-  widget: "FbRow",
+  widget: "FbCol",
   widgetName: "栅格",
-  gutter: 20,
   childes: [],
 };

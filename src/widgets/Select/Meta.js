@@ -4,7 +4,6 @@ export default {
   label: "下拉框",
   name: "",
   placeholder: "请选择",
-  size: "small",
   options: [
     {
       label: "选项1",

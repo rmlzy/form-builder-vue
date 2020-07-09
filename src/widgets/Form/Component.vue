@@ -1,5 +1,11 @@
 <template>
-  <el-form>
+  <el-form
+    :inline="config.inline"
+    :size="config.size"
+    :label-position="config['label-position']"
+    :label-width="config['label-width'] + 'px'"
+    :label-suffix="config['label-suffix']"
+  >
     <draggable
       class="stage"
       v-model="config.childes"
@@ -38,11 +44,6 @@ export default {
   },
   components: {
     draggable,
-  },
-  data() {
-    return {
-      whatever: [],
-    };
   },
   beforeCreate() {
     this.$options.components.Editable = () => import("../../Editable");

@@ -4,7 +4,6 @@
       v-model="formData[config.name]"
       style="width: 100%;"
       :placeholder="config.placeholder"
-      :size="config.size"
       :clearable="config.clearable"
       :filterable="config.filterable"
     >
