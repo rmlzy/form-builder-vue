@@ -3,7 +3,16 @@
     <el-button size="small" plain @click="() => setSchemaVisible(true)">查看Schema</el-button>
     <el-button size="small" plain :loading="codeLoading" @click="() => setCodeVisible(true)">查看Code</el-button>
     <el-button size="small" type="primary" :loading="saveLoading" @click="saveSchema">保存</el-button>
-    <el-button size="small" style="float: right;" plain type="danger" @click="clearSchema">清空</el-button>
+    <el-popconfirm
+      title="删除以后无法恢复, 是否继续？"
+      confirmButtonText="确认"
+      cancelButtonText="取消"
+      @onConfirm="clearSchema"
+    >
+      <el-button slot="reference" size="small" style="float: right;" plain type="danger">
+        清空
+      </el-button>
+    </el-popconfirm>
 
     <el-dialog title="Schema" :visible.sync="schemaVisible" top="5%" width="70%" append-to-body>
       <pre><code>{{ schemaStr }}</code></pre>

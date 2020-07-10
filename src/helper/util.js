@@ -143,7 +143,7 @@ export const genTableMockData = (columns, max) => {
   return res;
 };
 
-export const genUuid = () => uuidv4().replace(/-/g, "_");
+export const genUuid = () => "R_" + uuidv4().replace(/-/g, "_");
 
 export const genWidgetUuid = (widgetName) => `${widgetName}__${genUuid()}`.replace("Fb", "");
 
