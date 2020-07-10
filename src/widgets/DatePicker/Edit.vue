@@ -1,5 +1,5 @@
 <template>
-  <el-drawer title="Input 配置" size="50%" :visible.sync="visible" append-to-body :before-close="beforeClose">
+  <el-drawer title="DatePicker 配置" size="50%" :visible.sync="visible" append-to-body :before-close="beforeClose">
     <el-form ref="form" :model="formData" :rules="rules" label-position="top" size="small" label-suffix="：">
       <el-row :gutter="20">
         <el-col :span="12">
@@ -15,25 +15,51 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="类型" prop="type">
+          <el-form-item label="显示类型" prop="type">
             <el-select v-model="formData.type" placeholder="请选择" style="width: 100%;">
               <el-option v-for="item in typeList" :key="item.value" :label="item.label" :value="item.value" />
             </el-select>
           </el-form-item>
         </el-col>
+        <el-col :span="12">
+        </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="最大长度" prop="maxlength">
-            <el-input-number style="width: 100%;" v-model="formData.maxlength" :min="0" :step="1" step-strictly />
+          <el-form-item label="是否必填" prop="required">
+            <el-switch v-model="formData.required" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="最小长度" prop="minlength">
-            <el-input-number style="width: 100%;" v-model="formData.minlength" :min="0" :step="1" step-strictly />
+          <el-form-item label="文本框可输入" prop="editable">
+            <el-switch v-model="formData.editable" />
           </el-form-item>
         </el-col>
       </el-row>
+      <el-row :gutter="20">
+        <el-col :span="12">
+          <el-form-item label="是否显示清除按钮" prop="clearable">
+            <el-switch v-model="formData.clearable" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="对齐方式" prop="align">
+            <el-radio-group v-model="formData.align">
+              <el-radio label="left">左</el-radio>
+              <el-radio label="center">中</el-radio>
+              <el-radio label="right">右</el-radio>
+            </el-radio-group>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-form-item label="尺寸" prop="size">
+        <el-radio-group v-model="formData.size">
+          <el-radio label="">默认</el-radio>
+          <el-radio label="medium">中号</el-radio>
+          <el-radio label="small">小号</el-radio>
+          <el-radio label="mini">迷你</el-radio>
+        </el-radio-group>
+      </el-form-item>
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item label="占位文本" prop="placeholder">
@@ -46,30 +72,6 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-row :gutter="20">
-        <el-col :span="12">
-          <el-form-item label="是否必填" prop="required">
-            <el-switch v-model="formData.required" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="是否显示输入字数统计" prop="show-word-limit">
-            <el-switch v-model="formData['show-word-limit']" />
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row :gutter="20">
-        <el-col :span="12">
-          <el-form-item label="是否可清空" prop="clearable">
-            <el-switch v-model="formData.clearable" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="是否显示切换密码图标" prop="show-password">
-            <el-switch v-model="formData['show-password']" />
-          </el-form-item>
-        </el-col>
-      </el-row>
     </el-form>
     <el-button type="primary" @click="save">保存</el-button>
   </el-drawer>
@@ -79,7 +81,7 @@
 import _ from "lodash";
 
 export default {
-  name: "FbInputEdit",
+  name: "FbDatePickerEdit",
   props: {
     visible: Boolean,
     config: Object,
@@ -93,11 +95,10 @@ export default {
         type: [{ required: true, message: "必填项" }],
       },
       typeList: [
-        { value: "text", label: "文字" },
-        { value: "email", label: "邮箱" },
-        { value: "password", label: "密码" },
-        { value: "color", label: "颜色" },
-        { value: "url", label: "URL" },
+        { value: "date", label: "日" },
+        { value: "week", label: "周" },
+        { value: "month", label: "月" },
+        { value: "year", label: "年" },
       ],
     };
   },
