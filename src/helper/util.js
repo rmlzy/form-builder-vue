@@ -218,6 +218,23 @@ export const findAndRemove = (schema, uuid) => {
   return filterChildesWithoutUuid(schema, uuid);
 };
 
+export const resetSchema = (schema) => {
+  schema = _.cloneDeep(schema);
+  const resetChildes = (childes) => {
+    return childes.map((child) => {
+      if (child.uuid) {
+        child.uuid = genWidgetUuid(child.widgetName);
+      } else {
+        if (_.isArray(child.childes)) {
+          child.childes = resetChildes(child.childes);
+        }
+      }
+      return child;
+    });
+  };
+  return resetChildes(schema);
+};
+
 /**
  * Props 转属性
  * @param {object} props

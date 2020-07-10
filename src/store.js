@@ -1,7 +1,16 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import _ from "lodash";
-import { safeStringify, findAndEdit, findAndRemove, getWidgetsMeta, genUuid, genWidgetUuid } from "./helper/util";
+import templates from "./helper/templates";
+import {
+  safeStringify,
+  findAndEdit,
+  findAndRemove,
+  getWidgetsMeta,
+  genUuid,
+  genWidgetUuid,
+  resetSchema,
+} from "./helper/util";
 
 const initWidget = (widget) => {
   widget = _.cloneDeep(widget);
@@ -25,6 +34,10 @@ const initWidgets = () => {
   return widgets.map((widget) => initWidget(widget)).filter((widget) => widget.widget !== "FbCol");
 };
 
+const initTemplates = () => {
+  return templates;
+};
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -32,6 +45,7 @@ export default new Vuex.Store({
   state: () => ({
     schema: [],
     widgets: initWidgets(),
+    templates: initTemplates(),
     selectedUuid: "",
     editedUuid: "",
   }),
@@ -41,6 +55,7 @@ export default new Vuex.Store({
     schemaStr: (state) => safeStringify(state.schema),
     selectedUuid: (state) => state.selectedUuid,
     editedUuid: (state) => state.editedUuid,
+    templates: (state) => state.templates,
   },
   mutations: {
     setSchema(state, payload) {
@@ -67,6 +82,11 @@ export default new Vuex.Store({
       const { index } = payload;
       const newWidget = initWidget(state.widgets[index]);
       Vue.set(state.widgets, index, newWidget);
+    },
+    addTemplate(state, payload) {
+      const { schema } = payload;
+      const newSchema = resetSchema(schema);
+      state.schema = [...state.schema, ...newSchema];
     },
   },
   actions: {},

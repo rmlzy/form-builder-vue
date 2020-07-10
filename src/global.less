@@ -6,7 +6,7 @@
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, segoe ui, Roboto, helvetica neue, Arial, noto sans, sans-serif,
-    apple color emoji, segoe ui emoji, segoe ui symbol, noto color emoji;
+  apple color emoji, segoe ui emoji, segoe ui symbol, noto color emoji;
   font-size: 14px;
   line-height: 1.5;
   color: #1f2f3d;
@@ -122,6 +122,25 @@ pre {
   }
 }
 
+.side {
+  position: relative;
+  margin: -10px;
+  height: calc(100vh - 70px);
+  padding-top: 42px;
+
+  &__hd {
+    position: absolute;
+    top: 3px;
+    left: 0;
+    z-index: 20;
+  }
+
+  &__bd {
+    height: 100%;
+    overflow-y: auto;
+  }
+}
+
 .stage {
   background: #fff;
 
@@ -156,10 +175,8 @@ pre {
   background: #f4f4f5;
   font-size: 12px;
 
-  &__wrap {
-    height: calc(100vh - 100px);
-    margin: -10px;
-    overflow-y: auto;
+  &--hide {
+    display: none;
   }
 
   &__icon {

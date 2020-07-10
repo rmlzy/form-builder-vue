@@ -199,7 +199,7 @@ const listPageSchema = [
 
 export default [
   {
-    template: "ListPage",
+    template: "FbListPage",
     templateName: "列表页",
     schema: listPageSchema,
   },

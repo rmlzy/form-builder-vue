@@ -4,7 +4,7 @@
     <el-button size="small" plain :loading="codeLoading" @click="() => setCodeVisible(true)">查看Code</el-button>
     <el-button size="small" type="primary" :loading="saveLoading" @click="saveSchema">保存</el-button>
     <el-popconfirm
-      title="删除以后无法恢复, 是否继续？"
+      title="清空以后无法恢复, 是否继续？"
       confirmButtonText="确认"
       cancelButtonText="取消"
       @onConfirm="clearSchema"
