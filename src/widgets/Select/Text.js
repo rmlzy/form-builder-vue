@@ -2,7 +2,8 @@ import _ from "lodash";
 import { props2Text } from "../../helper/util";
 
 export default (config) => {
-  const formItemProps = _.pick(config, ["label", "name", "required"]);
+  const formItemProps = _.pick(config, ["label", "required"]);
+  formItemProps.prop = config.name;
   const selectProps = _.pick(config, ["placeholder", "size", "clearable", "filterable"]);
   const items = config.configs.map((child) => {
     const configProps = {
