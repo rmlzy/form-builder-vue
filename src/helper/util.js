@@ -260,7 +260,7 @@ export const formatCode = (schema) => {
   return axios({
     method: "POST",
     url: "/api/builder/format",
-    data: { code, type: "vue" },
+    data: { code, type: "VUE" },
   }).then((res) => res.data);
 };
 
