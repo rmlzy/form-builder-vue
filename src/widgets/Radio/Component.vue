@@ -1,6 +1,6 @@
 <template>
   <el-form-item :label="config.label" :prop="config.name" :required="config.required">
-    <el-radio-group v-model="formData[config.name]" style="width: 100%;">
+    <el-radio-group v-model="whatever" style="width: 100%;">
       <template v-for="(item, index) in config.options">
         <el-radio-button v-if="config.useButton" :key="index" :label="item.value" :border="config.border">
           {{ item.label }}
@@ -21,7 +21,7 @@ export default {
   },
   data() {
     return {
-      formData: {},
+      whatever: '',
     };
   },
 };

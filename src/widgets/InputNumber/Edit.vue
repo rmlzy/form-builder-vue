@@ -1,5 +1,5 @@
 <template>
-  <el-drawer title="Input 配置" size="50%" :visible.sync="visible" append-to-body :before-close="beforeClose">
+  <el-drawer title="InputNumber 配置" size="50%" :visible.sync="visible" append-to-body :before-close="beforeClose">
     <el-form ref="form" :model="formData" :rules="rules" label-position="top" size="small" label-suffix="：">
       <el-row :gutter="20">
         <el-col :span="12">
@@ -15,22 +15,37 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="类型" prop="type">
-            <el-select v-model="formData.type" placeholder="请选择" style="width: 100%;">
-              <el-option v-for="item in typeList" :key="item.value" :label="item.label" :value="item.value" />
-            </el-select>
+          <el-form-item label="最大值" prop="min">
+            <el-input-number style="width: 100%;" v-model="formData.min" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="最小值" prop="max">
+            <el-input-number style="width: 100%;" v-model="formData.max" />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="最大长度" prop="maxlength">
-            <el-input-number style="width: 100%;" v-model="formData.maxlength" :min="0" :step="1" step-strictly />
+          <el-form-item label="步长" prop="step">
+            <el-input-number style="width: 100%;" v-model="formData.step" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="最小长度" prop="minlength">
-            <el-input-number style="width: 100%;" v-model="formData.minlength" :min="0" :step="1" step-strictly />
+          <el-form-item label="是否只能输入 step 的倍数" prop="step-strictly">
+            <el-switch v-model="formData['step-strictly']" />
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col :span="12">
+          <el-form-item label="是否必填" prop="required">
+            <el-switch v-model="formData.required" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="数值精度" prop="precision">
+            <el-input-number style="width: 100%;" v-model="formData.precision" />
           </el-form-item>
         </el-col>
       </el-row>
@@ -46,27 +61,18 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-row>
+      <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="是否必填" prop="required">
-            <el-switch v-model="formData.required" />
+          <el-form-item label="是否使用控制按钮" prop="controls">
+            <el-switch v-model="formData.controls"></el-switch>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="是否显示输入字数统计" prop="show-word-limit">
-            <el-switch v-model="formData['show-word-limit']" />
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="是否可清空" prop="clearable">
-            <el-switch v-model="formData.clearable" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="是否显示切换密码图标" prop="show-password">
-            <el-switch v-model="formData['show-password']" />
+          <el-form-item label="控制按钮位置" prop="controls-position">
+            <el-select v-model="formData['controls-position']">
+              <el-option value="">默认</el-option>
+              <el-option value="right">右边</el-option>
+            </el-select>
           </el-form-item>
         </el-col>
       </el-row>
@@ -79,7 +85,7 @@
 import _ from "lodash";
 
 export default {
-  name: "FbInputEdit",
+  name: "FbInputNumberEdit",
   props: {
     visible: Boolean,
     config: Object,
