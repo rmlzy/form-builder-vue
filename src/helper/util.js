@@ -26,6 +26,23 @@ const _collectFormData = (schema) => {
 };
 
 /**
+ * 获取页面参数
+ * @param name
+ * @param url
+ * @returns {string|null}
+ */
+export const getParameterByName = (name, url) => {
+  if (!url) url = window.location.href;
+  // eslint-disable-next-line
+  name = name.replace(/[\[\]]/g, "\\$&");
+  var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+    results = regex.exec(url);
+  if (!results) return null;
+  if (!results[2]) return "";
+  return decodeURIComponent(results[2].replace(/\+/g, " "));
+};
+
+/**
  * 生成 Vue 文件
  * @param {array} schema
  * @returns {string}
@@ -244,5 +261,23 @@ export const formatCode = (schema) => {
     method: "POST",
     url: "/api/builder/format",
     data: { code, type: "vue" },
+  }).then((res) => res.data);
+};
+
+export const save = async (schema) => {
+  const code = schema2code(schema);
+  const token = getParameterByName("token");
+  if (!token) {
+    return Promise.reject(new Error("未登录"));
+  }
+  return axios({
+    method: "POST",
+    url: "/api/builder/save",
+    data: {
+      type: "VUE",
+      schema,
+      code,
+      token,
+    },
   }).then((res) => res.data);
 };

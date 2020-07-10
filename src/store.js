@@ -12,8 +12,9 @@ const initWidget = (widget) => {
   // 拖拽 Row 控件时, 初始化 Col
   if (widget.widget === "FbRow") {
     widget.childes = [
-      { widget: "FbCol", span: 12, uuid: genWidgetUuid("FbCol"), childes: [] },
-      { widget: "FbCol", span: 12, uuid: genWidgetUuid("FbCol"), childes: [] },
+      { widget: "FbCol", span: 8, uuid: genWidgetUuid("FbCol"), childes: [] },
+      { widget: "FbCol", span: 8, uuid: genWidgetUuid("FbCol"), childes: [] },
+      { widget: "FbCol", span: 8, uuid: genWidgetUuid("FbCol"), childes: [] },
     ];
   }
   return widget;
@@ -21,7 +22,7 @@ const initWidget = (widget) => {
 
 const initWidgets = () => {
   const widgets = getWidgetsMeta();
-  return widgets.map((widget) => initWidget(widget));
+  return widgets.map((widget) => initWidget(widget)).filter((widget) => widget.widget !== "FbCol");
 };
 
 Vue.use(Vuex);
@@ -62,9 +63,10 @@ export default new Vuex.Store({
       const { uuid } = payload;
       state.schema = findAndRemove(state.schema, uuid);
     },
-    setWidgetUuid(state, payload) {
+    resetWidget(state, payload) {
       const { index } = payload;
-      state.widgets[index] = initWidget(state.widgets[index]);
+      const newWidget = initWidget(state.widgets[index]);
+      Vue.set(state.widgets, index, newWidget);
     },
   },
   actions: {},

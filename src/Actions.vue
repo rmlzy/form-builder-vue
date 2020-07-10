@@ -2,16 +2,17 @@
   <div class="layout__mid__hd">
     <el-button size="small" plain @click="() => setSchemaVisible(true)">查看Schema</el-button>
     <el-button size="small" plain :loading="codeLoading" @click="() => setCodeVisible(true)">查看Code</el-button>
-    <el-button size="small" plain type="danger" @click="clearSchema">清空</el-button>
+    <el-button size="small" type="primary" :loading="saveLoading" @click="saveSchema">保存</el-button>
+    <el-button size="small" style="float: right;" plain type="danger" @click="clearSchema">清空</el-button>
 
-    <el-dialog title="Schema" :visible.sync="schemaVisible" width="70%" append-to-body>
+    <el-dialog title="Schema" :visible.sync="schemaVisible" top="5%" width="70%" append-to-body>
       <pre><code>{{ schemaStr }}</code></pre>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="downloadSchema">下载</el-button>
       </span>
     </el-dialog>
 
-    <el-dialog title="Code" :visible.sync="codeVisible" width="70%" append-to-body>
+    <el-dialog title="Code" :visible.sync="codeVisible" top="5%" width="70%" append-to-body>
       <pre><code>{{ code.text }}</code></pre>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="downloadVue">下载</el-button>
@@ -22,7 +23,7 @@
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
-import { formatCode, safeStringify } from "./helper/util";
+import { formatCode, safeStringify, save } from "./helper/util";
 import fileDownload from "js-file-download";
 
 export default {
@@ -33,6 +34,7 @@ export default {
       codeVisible: false,
       code: {},
       codeLoading: false,
+      saveLoading: false,
     };
   },
   computed: {
@@ -64,6 +66,21 @@ export default {
     },
     downloadVue() {
       fileDownload(this.code.text, `${this.code.uuid}.vue`);
+    },
+    async saveSchema() {
+      this.saveLoading = true;
+      try {
+        const res = await save(this.schema);
+        if (res.success) {
+          this.$message.success(res.message);
+        } else {
+          this.$message.error(res.message);
+        }
+      } catch (e) {
+        this.$message.error(e.message);
+      } finally {
+        this.saveLoading = false;
+      }
     },
   },
 };

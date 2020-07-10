@@ -19,7 +19,8 @@
         <el-col :span="24">
           <el-form-item label="尺寸" prop="size">
             <el-radio-group v-model="formData.size">
-              <el-radio label="medium">默认</el-radio>
+              <el-radio label="">默认</el-radio>
+              <el-radio label="medium">中号</el-radio>
               <el-radio label="small">小号</el-radio>
               <el-radio label="mini">迷你</el-radio>
             </el-radio-group>
@@ -73,7 +74,6 @@ export default {
       formData: _.cloneDeep(this.config),
       rules: {
         text: [{ required: true, message: "必填项" }],
-        type: [{ required: true, message: "必填项" }],
       },
       typeList: [
         { value: "", label: "默认按钮" },

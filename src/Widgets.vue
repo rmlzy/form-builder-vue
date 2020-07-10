@@ -4,13 +4,7 @@
     v-bind="{ group: { name: 'widget', pull: 'clone', put: false }, sort: false, ghostClass: 'ghost' }"
     @start="onStart"
   >
-    <div
-      v-for="(widget, index) in widgets"
-      :key="index"
-      class="widget"
-      :id="widget.widget"
-      v-if="widget.widget !== 'FbCol'"
-    >
+    <div v-for="(widget, index) in widgets" :key="index" class="widget" :id="widget.widget">
       <div class="widget__name">
         <b>{{ widget.widget | ignoreFbPrefix }}</b>
         <span>{{ widget.widgetName }}</span>
@@ -36,10 +30,10 @@ export default {
     ...mapGetters(["widgets"]),
   },
   methods: {
-    ...mapMutations(["setWidgetUuid"]),
+    ...mapMutations(["resetWidget"]),
     onStart(evt) {
       // 拖动开始时, 为控件创建新的 uuid
-      this.setWidgetUuid({ index: evt.oldIndex });
+      this.resetWidget({ index: evt.oldIndex });
     },
   },
 };
