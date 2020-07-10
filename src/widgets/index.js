@@ -23,5 +23,6 @@ export * from "./Switch/index";
 export * from "./Table/index";
 export * from "./Tabs/index";
 export * from "./TextArea/index";
+export * from "./Timeline/index";
 export * from "./TimePicker/index";
 export * from "./Upload/index";
