@@ -8,3 +8,5 @@ export * from "./Select/index";
 export * from "./Form/index";
 export * from "./Row/index";
 export * from "./Col/index";
+export * from "./Table/index";
+export * from "./Radio/index";

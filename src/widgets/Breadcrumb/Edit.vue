@@ -9,25 +9,32 @@
         </el-col>
       </el-row>
 
-      <draggable :list="formData.childes" handle=".sortable__handle" ghost-class="sortable__ghost">
-        <el-row :gutter="20" v-for="(child, index) in formData.childes" :key="index" class="sortable">
-          <el-col :span="2">
-            <div class="sortable__handle">
-              <i class="el-icon-s-operation"></i>
-            </div>
-          </el-col>
-          <el-col :span="10">
-            <el-input size="mini" v-model="child.text" />
-          </el-col>
-          <el-col :span="4">
-            <el-button size="mini" plain type="danger" @click="() => removeChild(index)">删除</el-button>
-          </el-col>
+      <el-form-item label="路径配置">
+        <el-row :gutter="20">
+          <el-col :span="2">排序</el-col>
+          <el-col :span="10">名称</el-col>
+          <el-col :span="4">操作</el-col>
         </el-row>
-      </draggable>
-      <el-button size="small" style="width: 100%;" type="default" @click="addChild">
-        <i class="el-icon-plus"></i>
-        <span>新增</span>
-      </el-button>
+        <draggable :list="formData.childes" handle=".sortable__handle" ghost-class="sortable__ghost">
+          <el-row :gutter="20" v-for="(child, index) in formData.childes" :key="index" class="sortable">
+            <el-col :span="2">
+              <div class="sortable__handle">
+                <i class="el-icon-s-operation"></i>
+              </div>
+            </el-col>
+            <el-col :span="10">
+              <el-input size="mini" v-model="child.text" />
+            </el-col>
+            <el-col :span="4">
+              <el-button size="mini" plain type="danger" @click="() => removeChild(index)">删除</el-button>
+            </el-col>
+          </el-row>
+        </draggable>
+        <el-button size="small" style="width: 100%;" type="default" @click="addChild">
+          <i class="el-icon-plus"></i>
+          <span>新增</span>
+        </el-button>
+      </el-form-item>
     </el-form>
     <el-button type="primary" @click="save">保存</el-button>
   </el-drawer>

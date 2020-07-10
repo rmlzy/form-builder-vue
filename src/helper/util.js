@@ -3,26 +3,130 @@ import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import * as Widgets from "../widgets/index";
 
-const _genVueFile = (code) => {
+/**
+ * 收集所有的表单控件的name字段, 生成 formData 填充到模板中
+ * @param {array} schema
+ * @returns {object}
+ */
+const _collectFormData = (schema) => {
+  const formData = {};
+  schema = _.cloneDeep(schema);
+  const findChildWithName = (childes) => {
+    childes.forEach((child) => {
+      if (child.name) {
+        formData[child.name] = "";
+      }
+      if (_.isArray(child.childes)) {
+        findChildWithName(child.childes);
+      }
+    });
+  };
+  findChildWithName(schema);
+  return formData;
+};
+
+/**
+ * 生成 Vue 文件
+ * @param {array} schema
+ * @returns {string}
+ */
+export const schema2code = (schema) => {
+  const codes = [];
+  schema.forEach((block) => {
+    codes.push(getWidgetText(block));
+  });
+  const template = codes.join("\n");
+  const data = {};
+  const methods = [];
+  const mounted = [];
+
+  if (template.includes("<el-form")) {
+    data.formData = _collectFormData(schema);
+  }
+
+  // 注入表格相关的方法
+  if (template.includes("<el-table")) {
+    data.tableData = [];
+    data.total = 0;
+    const mockTableData = [
+      { id: 1, name: "张三", mobile: "13888888881", status: "审核通过" },
+      { id: 2, name: "李四", mobile: "13888888882", status: "待审核" },
+      { id: 3, name: "王五", mobile: "13888888883", status: "审核驳回" },
+      { id: 4, name: "赵六", mobile: "13888888884", status: "待审核" },
+    ];
+    methods.push(`
+    /**
+     * 获取表格数据
+     * @returns {Promise<*[]>}
+     */
+    async fetchTableData () {
+      const mockApi = () => Promise.resolve(${safeStringify(mockTableData)});
+      this.tableData = await mockApi();
+      this.total = this.tableData.length;
+    },`);
+    mounted.push(`this.fetchTableData()`);
+  }
+
+  // 注入分页相关的方法
+  if (template.includes("<el-pagination")) {
+    data.currentPage = 1;
+    methods.push(`
+    /**
+     * pageSize 改变时会触发
+     * @param {number} size 新的页长
+     */
+    onSizeChange(size) {
+      this.currentPage = 1;
+      this.size = size;
+      this.fetchTableData();
+    },`);
+    methods.push(`
+    /**
+     * currentPage 改变时会触发
+     * @param {number} currentPage 新的页码
+     */
+    onCurrentChange(currentPage) {
+      this.currentPage = currentPage;
+      this.fetchTableData();
+    },`);
+  }
   return `
-<template>
-  <div>
-  ${code}
-  </div>
-</template>
-
-<script>
-export default {
-  name: "",
-  data() {
-    return {}
-  },
-  methods: {},
+  <template>
+    <div>
+    ${template}
+    </div>
+  </template>
+  
+  <script>
+  export default {
+    name: "YourAwesomeForm",
+    data() {
+      return ${safeStringify(data)}
+    },
+    mounted() {
+      ${mounted.join("\n")}
+    },
+    methods: {
+      ${methods.join("\n")}
+    },
+  };
+  </script>`;
 };
-</script>`;
+
+export const genTableMockData = (columns, max) => {
+  columns = columns || [];
+  const res = [];
+  for (let i = 0; i < max; i++) {
+    const row = {};
+    columns.forEach((col) => {
+      row[col.prop] = `模拟数据${i}`;
+    });
+    res.push(row);
+  }
+  return res;
 };
 
-export const genUuid = () => uuidv4();
+export const genUuid = () => uuidv4().replace(/-/g, "_");
 
 export const genWidgetUuid = (widgetName) => `${widgetName}__${genUuid()}`.replace("Fb", "");
 
@@ -53,14 +157,6 @@ export const getWidgetMeta = (widgetName) => Widgets[`${widgetName}Meta`];
 export const getWidgetText = (config) => {
   const textFuc = `${config.widget}Text`;
   return Widgets[textFuc](config);
-};
-
-export const schema2code = (schema) => {
-  const codes = [];
-  schema.forEach((block) => {
-    codes.push(getWidgetText(block));
-  });
-  return _genVueFile(codes.join("\n"));
 };
 
 export const safeStringify = (json) => {

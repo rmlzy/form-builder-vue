@@ -1,10 +1,11 @@
 import _ from "lodash";
 import { props2Text } from "../../helper/util";
 
-export default (option) => {
-  const formItemProps = _.pick(option, ["label", "name", "required"]);
-  const textareaProps = _.pick(option, ["type", "maxlength", "minlength", "show-word-limit", "placeholder", "rows"]);
+export default (config) => {
+  const formItemProps = _.pick(config, ["label", "name", "required"]);
+  const textareaProps = _.pick(config, ["type", "maxlength", "minlength", "show-word-limit", "placeholder", "rows"]);
   textareaProps.type = "textarea";
+  textareaProps["v-model"] = `formData.${config.name}`;
   return `
   <el-form-item ${props2Text(formItemProps)}>
     <el-input ${props2Text(textareaProps)} />

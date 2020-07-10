@@ -1,5 +1,5 @@
 <template>
-  <el-drawer title="Select 配置" size="50%" :visible.sync="visible" append-to-body :before-close="beforeClose">
+  <el-drawer title="Radio 配置" size="50%" :visible.sync="visible" append-to-body :before-close="beforeClose">
     <el-form ref="form" :model="formData" :rules="rules" label-position="top" size="small" label-suffix="：">
       <el-row :gutter="20">
         <el-col :span="12">
@@ -15,32 +15,13 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="是否必填" prop="required">
-            <el-switch v-model="formData.required" />
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row :gutter="20">
-        <el-col :span="12">
-          <el-form-item label="占位文本" prop="placeholder">
-            <el-input v-model="formData.placeholder"></el-input>
+          <el-form-item label="展示为按钮效果" prop="useButton">
+            <el-switch v-model="formData.useButton" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="辅助文本" prop="extra">
-            <el-input v-model="formData.extra"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row :gutter="20">
-        <el-col :span="12">
-          <el-form-item label="是否可清空" prop="clearable">
-            <el-switch v-model="formData.clearable" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="是否可搜索" prop="filterable">
-            <el-switch v-model="formData.filterable" />
+          <el-form-item label="是否显示边框" prop="border">
+            <el-switch v-model="formData.border" />
           </el-form-item>
         </el-col>
       </el-row>
@@ -84,7 +65,7 @@ import draggable from "vuedraggable";
 import _ from "lodash";
 
 export default {
-  name: "FbSelectEdit",
+  name: "FbRadioEdit",
   props: {
     visible: Boolean,
     config: Object,
