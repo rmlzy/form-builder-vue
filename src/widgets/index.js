@@ -17,6 +17,7 @@ export * from "./Row/index";
 export * from "./Rate/index";
 export * from "./Select/index";
 export * from "./Slider/index";
+export * from "./Steps/index";
 export * from "./Switch/index";
 export * from "./Table/index";
 export * from "./TextArea/index";

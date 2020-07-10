@@ -1,18 +1,39 @@
 <template>
-  <el-drawer title="Breadcrumb 配置" size="50%" :visible.sync="visible" append-to-body :before-close="beforeClose">
+  <el-drawer title="Steps 配置" size="50%" :visible.sync="visible" append-to-body :before-close="beforeClose">
     <el-form ref="form" :model="formData" :rules="rules" label-position="top" size="small" label-suffix="：">
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="分隔符" prop="separator">
-            <el-input v-model="formData.separator"></el-input>
+          <el-form-item label="显示方向" prop="direction">
+            <el-radio-group v-mode="formData.direction">
+              <el-radio label="horizontal">水平</el-radio>
+              <el-radio label="vertical">垂直</el-radio>
+            </el-radio-group>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="当前激活步骤" prop="active">
+            <el-input-number style="width: 100%;" v-model="formData.active" :min="0" :step="1" step-strictly />
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col :span="12">
+          <el-form-item label="进行居中对齐" prop="align-center">
+            <el-switch v-model="formData['align-center']" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="是否应用简洁风格" prop="simple">
+            <el-switch v-model="formData.simple" />
           </el-form-item>
         </el-col>
       </el-row>
 
-      <el-form-item label="路径配置">
+      <el-form-item label="步骤配置">
         <el-row :gutter="20">
           <el-col :span="2">排序</el-col>
-          <el-col :span="10">名称</el-col>
+          <el-col :span="8">标题</el-col>
+          <el-col :span="8">描述</el-col>
           <el-col :span="4">操作</el-col>
         </el-row>
         <draggable :list="formData.options" handle=".sortable__handle" ghost-class="sortable__ghost">
@@ -22,8 +43,11 @@
                 <i class="el-icon-s-operation"></i>
               </div>
             </el-col>
-            <el-col :span="10">
-              <el-input size="mini" v-model="child.text" />
+            <el-col :span="8">
+              <el-input size="mini" v-model="child.title" />
+            </el-col>
+            <el-col :span="8">
+              <el-input size="mini" v-model="child.description" />
             </el-col>
             <el-col :span="4">
               <el-button size="mini" plain type="danger" @click="() => removeChild(index)">删除</el-button>
@@ -45,7 +69,7 @@ import draggable from "vuedraggable";
 import _ from "lodash";
 
 export default {
-  name: "FbBreadcrumbEdit",
+  name: "FbStepsEdit",
   props: {
     visible: Boolean,
     config: Object,

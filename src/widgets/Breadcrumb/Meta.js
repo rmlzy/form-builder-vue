@@ -2,7 +2,7 @@ export default {
   widget: "FbBreadcrumb",
   widgetName: "面包屑",
   separator: "/",
-  childes: [
+  options: [
     {
       text: "首页",
     },
