@@ -214,23 +214,23 @@ export const props2Text = (props) => {
       continue;
     }
     if (_.isObject(value)) {
-      texts.push(`:${key}="${JSON.stringify(value)}"`);
+      texts.push(`:${key}='${JSON.stringify(value)}'`);
       continue;
     }
     if (_.isArray(value)) {
-      texts.push(`:${key}="${JSON.stringify(value)}"`);
+      texts.push(`:${key}='${JSON.stringify(value)}'`);
       continue;
     }
     if (_.isBoolean(value)) {
-      texts.push(`:${key}="${value}"`);
+      texts.push(`:${key}='${value}'`);
       continue;
     }
     if (_.isString(value)) {
-      texts.push(`${key}="${value}"`);
+      texts.push(`${key}='${value}'`);
       continue;
     }
     if (_.isNumber(value)) {
-      texts.push(`:${key}="${value}"`);
+      texts.push(`:${key}='${value}'`);
       continue;
     }
     console.log(`key: ${key}, value: ${value} will be ignore!`);
