@@ -4,7 +4,8 @@ import { props2Text, getWidgetText } from "../../helper/util";
 export default (config) => {
   const formProps = _.pick(config, ["inline", "size", "label-position", "label-width", "label-suffix"]);
   const childTexts = config.childes.map((child) => getWidgetText(child));
-  return `<el-form v-model="formData" ${props2Text(formProps)}>
+  return `
+  <el-form ref="form" :model="formData" ${props2Text(formProps)}>
   ${childTexts.join("\n")}
   </el-form>`;
 };

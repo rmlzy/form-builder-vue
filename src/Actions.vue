@@ -1,5 +1,6 @@
 <template>
   <div>
+<!--    <el-button size="small" plain @click="() => onSetPreviewMode(true)">预览</el-button>-->
     <el-button size="small" plain @click="() => setSchemaVisible(true)">查看Schema</el-button>
     <el-button size="small" plain :loading="codeLoading" @click="() => setCodeVisible(true)">查看Code</el-button>
     <el-button size="small" type="primary" :loading="saveLoading" @click="saveSchema">保存</el-button>
@@ -39,6 +40,7 @@ export default {
   name: "Actions",
   data() {
     return {
+      preview: false,
       schemaVisible: false,
       codeVisible: false,
       code: {},
@@ -47,12 +49,15 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["schema", "schemaStr"]),
+    ...mapGetters(["schema", "schemaStr", "previewMode"]),
   },
   methods: {
-    ...mapMutations(["setSchema"]),
+    ...mapMutations(["setSchema", "setPreviewMode"]),
     clearSchema() {
       this.setSchema({ schema: [] });
+    },
+    onSetPreviewMode() {
+      this.setPreviewMode({ previewMode: !this.previewMode });
     },
     setSchemaVisible(schemaVisible) {
       this.schemaVisible = schemaVisible;

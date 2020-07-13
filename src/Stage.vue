@@ -1,6 +1,6 @@
 <template>
   <draggable
-    class="stage"
+    :class="{ stage: true, 'stage--preview': previewMode }"
     v-model="schema"
     v-bind="{ group: 'widget', ghostClass: 'sortable__ghost', animation: 200, handle: '.stage-child' }"
   >
@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { mapMutations } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 import _ from "lodash";
 import Draggable from "vuedraggable";
 import Editable from "./Editable";
@@ -21,6 +21,7 @@ export default {
     Editable,
   },
   computed: {
+    ...mapGetters(["previewMode"]),
     schema: {
       get() {
         return this.$store.state.schema;

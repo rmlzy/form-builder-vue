@@ -1,6 +1,7 @@
 <template>
   <el-button
     :size="config.size"
+    :icon="config.icon"
     :type="config.type"
     :plain="config.plain"
     :round="config.round"

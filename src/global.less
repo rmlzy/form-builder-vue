@@ -70,6 +70,31 @@ pre {
   }
 }
 
+.fb-inline .editable {
+  display: inline-block;
+}
+
+.stage--preview {
+  .editable {
+    padding: 0;
+    border: none !important;
+    background: none !important;
+
+    &__name,
+    &__handle,
+    &__actions {
+      display: none;
+    }
+  }
+
+  .form-highlight,
+  .row-highlight,
+  .col-highlight {
+    min-height: auto;
+    border: none;
+  }
+}
+
 .editable {
   position: relative;
   cursor: pointer;

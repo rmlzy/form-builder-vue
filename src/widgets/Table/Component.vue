@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-table
-      :data="mockData"
+      :data="config.mockData"
       :border="config.border"
       :stripe="config.stripe"
       :size="config.size"
@@ -32,17 +32,10 @@
 </template>
 
 <script>
-import { genTableMockData } from "../../helper/util";
-
 export default {
   name: "FbTable",
   props: {
     config: Object,
-  },
-  data() {
-    return {
-      mockData: genTableMockData(this.config.columns, 10),
-    };
   },
 };
 </script>

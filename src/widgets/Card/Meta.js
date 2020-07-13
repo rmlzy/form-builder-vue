@@ -1,6 +1,6 @@
 export default {
   widget: "FbCard",
-  widgetName: "表单",
+  widgetName: "卡片",
   header: "卡片",
   childes: [],
 };

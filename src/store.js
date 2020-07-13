@@ -20,6 +20,7 @@ export default new Vuex.Store({
     templates: initTemplates(),
     selectedUuid: "",
     editedUuid: "",
+    previewMode: false,
   }),
   getters: {
     widgets: (state) => state.widgets,
@@ -28,6 +29,7 @@ export default new Vuex.Store({
     selectedUuid: (state) => state.selectedUuid,
     editedUuid: (state) => state.editedUuid,
     templates: (state) => state.templates,
+    previewMode: (state) => state.previewMode,
   },
   mutations: {
     setSchema(state, payload) {
@@ -45,6 +47,10 @@ export default new Vuex.Store({
     setWidget(state, payload) {
       const { uuid, config } = payload;
       state.schema = findAndEdit(state.schema, uuid, config);
+    },
+    setPreviewMode(state, payload) {
+      const { previewMode } = payload;
+      state.previewMode = previewMode;
     },
     removeWidget(state, payload) {
       const { uuid } = payload;

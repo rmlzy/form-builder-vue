@@ -1,5 +1,5 @@
 <template>
-  <div :class="{ editable: true, active: active, clearfix: true }" @click.stop="onChoose">
+  <div :class="{ editable: true, active: active }" @click.stop="onChoose">
     <div :class="{ editable__handle: true, [handleClass]: handleClass }">
       <i class="el-icon-s-operation"></i>
     </div>

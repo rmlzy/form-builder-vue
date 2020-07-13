@@ -3,9 +3,11 @@ import { props2Text } from "../../helper/util";
 
 export default (config) => {
   const tableProps = _.pick(config, ["border", "stripe", "size", "show-header", "show-summary"]);
+  tableProps.data = config.mockData;
   const selectionText = config.showSelection ? `<el-table-column type="selection" />` : "";
   const columnTexts = config.columns.map((col) => {
     const colProps = _.pick(col, ["col", "label", "fixed", "sortable"]);
+    colProps.prop = col.name;
     return `<el-table-column ${props2Text(colProps)} />`;
   });
   let paginationText;
@@ -20,7 +22,7 @@ export default (config) => {
   <div style="text-align: right;">
     <br />
     <el-pagination 
-      ${props2Text(paginationProps)} 
+      ${props2Text(paginationProps)}
       :total="total" 
       :current-page="currentPage"
       :page-sizes="[10, 20, 30, 50, 100]"
@@ -29,10 +31,11 @@ export default (config) => {
     />
   </div>`;
   }
+  console.log(tableProps);
   return `
-  <el-table :data="tableData" ${props2Text(tableProps)}>
+  <el-table :loading="loading" ${props2Text(tableProps)}>
     ${selectionText}
     ${columnTexts.join("\n")}
-    ${paginationText}
-  </el-table>`;
+  </el-table>
+  ${paginationText}`;
 };

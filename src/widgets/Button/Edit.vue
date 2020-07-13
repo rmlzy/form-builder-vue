@@ -1,5 +1,5 @@
 <template>
-  <el-drawer title="Button 配置" size="50%" :visible.sync="visible" append-to-body :before-close="beforeClose">
+  <el-drawer title="Button 配置" size="60%" :visible.sync="visible" append-to-body :before-close="beforeClose">
     <el-form ref="form" :model="formData" :rules="rules" label-position="top" size="small">
       <el-row :gutter="20">
         <el-col :span="12">
@@ -16,7 +16,17 @@
         </el-col>
       </el-row>
       <el-row :gutter="20">
-        <el-col :span="24">
+        <el-col :span="12">
+          <el-form-item label="图标" prop="type">
+            <el-select v-model="formData.icon" filterable placeholder="请选择" style="width: 100%;">
+              <el-option v-for="item in iconList" :key="item.value" :value="item">
+                {{ item }}
+                <i :class="item"></i>
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
           <el-form-item label="尺寸" prop="size">
             <el-radio-group v-model="formData.size">
               <el-radio label="">默认</el-radio>
@@ -62,6 +72,7 @@
 
 <script>
 import _ from "lodash";
+import iconList from "../../helper/icons"
 
 export default {
   name: "FbButtonEdit",
@@ -75,6 +86,7 @@ export default {
       rules: {
         text: [{ required: true, message: "必填项" }],
       },
+      iconList: iconList,
       typeList: [
         { value: "", label: "默认按钮" },
         { value: "primary", label: "主要按钮" },

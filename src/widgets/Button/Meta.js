@@ -4,5 +4,6 @@ export default {
   text: "按钮",
   type: "",
   size: "",
+  icon: "",
   "native-type": "button",
 };

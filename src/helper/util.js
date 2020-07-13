@@ -58,29 +58,60 @@ export const schema2code = (schema) => {
   const methods = [];
   const mounted = [];
 
+  // 解析formData
   if (template.includes("<el-form")) {
     data.formData = _collectFormData(schema);
   }
 
   // 注入表格相关的方法
   if (template.includes("<el-table")) {
-    data.tableData = [];
+    data.formData = data.formData || {};
+    data.formData.page = 1;
+    data.formData.size = 10;
+    data.list = [];
     data.total = 0;
-    const mockTableData = [
-      { id: 1, name: "张三", mobile: "13888888881", status: "审核通过" },
-      { id: 2, name: "李四", mobile: "13888888882", status: "待审核" },
-      { id: 3, name: "王五", mobile: "13888888883", status: "审核驳回" },
-      { id: 4, name: "赵六", mobile: "13888888884", status: "待审核" },
-    ];
+    data.loading = false;
+    methods.push(`
+    /**
+     * 查询
+     */
+    search() {
+      this.formData.page = 1;
+      this.fetchTableData();
+    },`);
+    methods.push(`
+    /**
+     * 重置
+     */
+    reset() {
+      this.formData.page = 1;
+      this.formData.size = 10;
+      this.$refs.form.resetFields();
+      this.fetchTableData();
+    },`);
     methods.push(`
     /**
      * 获取表格数据
      * @returns {Promise<*[]>}
      */
     async fetchTableData () {
-      const mockApi = () => Promise.resolve(${safeStringify(mockTableData)});
-      this.tableData = await mockApi();
-      this.total = this.tableData.length;
+      /**
+       * TODO: 填充正确的接口地址
+       */
+      this.loading = true;
+      try {
+        const res = await axios({
+          method: "GET",
+          url: "your_awesome_url",
+          params: this.formData
+        });
+        this.list = res.data;
+        this.total = this.list.length;
+      } catch (e) {
+        this.$message.error(e.message);
+      } finally {
+        this.loading = false;
+      }
     },`);
     mounted.push(`this.fetchTableData()`);
   }

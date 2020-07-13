@@ -13,6 +13,7 @@
         <el-row :gutter="20">
           <el-col :span="2">排序</el-col>
           <el-col :span="8">名称</el-col>
+          <el-col :span="8">内联</el-col>
           <el-col :span="8"></el-col>
         </el-row>
         <draggable :list="formData.childes" handle=".sortable__handle" ghost-class="sortable__ghost">
@@ -24,6 +25,9 @@
             </el-col>
             <el-col :span="8">
               <el-input-number size="mini" v-model="child.span" />
+            </el-col>
+            <el-col :span="8">
+              <el-switch size="mini" v-model="child.inline" />
             </el-col>
             <el-col :span="4">
               <el-button size="mini" plain type="danger" @click="() => removeChild(index)">删除</el-button>

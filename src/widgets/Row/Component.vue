@@ -1,7 +1,12 @@
 <template>
   <div class="row-highlight">
     <el-row :gutter="config.gutter">
-      <el-col v-for="(child, childIndex) in config.childes" :key="childIndex" :span="child.span">
+      <el-col
+        v-for="(child, childIndex) in config.childes"
+        :key="childIndex"
+        :span="child.span"
+        :class="{ 'fb-inline': child.inline }"
+      >
         <draggable
           :id="child.uuid"
           class="stage"

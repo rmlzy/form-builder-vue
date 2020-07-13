@@ -43,7 +43,7 @@
         </el-radio-group>
       </el-form-item>
 
-      <el-form-item label="列配置" prop="columns">
+      <el-card header="列配置">
         <el-row :gutter="20">
           <el-col :span="2">排序</el-col>
           <el-col :span="4">名称</el-col>
@@ -84,7 +84,8 @@
           <i class="el-icon-plus"></i>
           <span>新增</span>
         </el-button>
-      </el-form-item>
+      </el-card>
+      <br />
 
       <el-row :gutter="20">
         <el-col :span="12">
@@ -134,6 +135,7 @@
 <script>
 import draggable from "vuedraggable";
 import _ from "lodash";
+import { genTableMockData } from "../../helper/util";
 
 export default {
   name: "FbTableEdit",
@@ -167,6 +169,7 @@ export default {
     save() {
       this.$refs.form.validate((valid) => {
         if (!valid) return;
+        this.formData.mockData = genTableMockData(this.formData.columns, 10);
         this.$emit("ok", _.cloneDeep(this.formData));
       });
     },
