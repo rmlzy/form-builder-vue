@@ -1,5 +1,5 @@
 <template>
-  <div class="layout__mid__hd">
+  <div>
     <el-button size="small" plain @click="() => setSchemaVisible(true)">查看Schema</el-button>
     <el-button size="small" plain :loading="codeLoading" @click="() => setCodeVisible(true)">查看Code</el-button>
     <el-button size="small" type="primary" :loading="saveLoading" @click="saveSchema">保存</el-button>

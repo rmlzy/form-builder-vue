@@ -1,13 +1,11 @@
 <template>
-  <div class="layout__mid__bd">
-    <draggable
-      class="stage"
-      v-model="schema"
-      v-bind="{ group: 'widget', ghostClass: 'sortable__ghost', animation: 200, handle: '.stage-child' }"
-    >
-      <editable handle-class="stage-child" v-for="(block, index) in schema" :key="index" :config="getCopy(block)" />
-    </draggable>
-  </div>
+  <draggable
+    class="stage"
+    v-model="schema"
+    v-bind="{ group: 'widget', ghostClass: 'sortable__ghost', animation: 200, handle: '.stage-child' }"
+  >
+    <editable handle-class="stage-child" v-for="(block, index) in schema" :key="index" :config="getCopy(block)" />
+  </draggable>
 </template>
 
 <script>
@@ -41,3 +39,27 @@ export default {
   },
 };
 </script>
+
+<style lang="less">
+.stage {
+  &__sort {
+    &__ghost {
+      position: relative;
+
+      &:before {
+        position: absolute;
+        top: -2px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        content: "";
+        background: #f56c6c;
+      }
+    }
+
+    &__drag {
+      opacity: 0.6;
+    }
+  }
+}
+</style>

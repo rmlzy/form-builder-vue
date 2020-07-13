@@ -85,3 +85,58 @@ export default {
   },
 };
 </script>
+
+<style lang="less">
+.side {
+  position: relative;
+  margin: -10px;
+  height: calc(100vh - 70px);
+  padding-top: 42px;
+
+  &__hd {
+    position: absolute;
+    top: 3px;
+    left: 0;
+    z-index: 20;
+  }
+
+  &__bd {
+    height: 100%;
+    overflow-y: auto;
+  }
+}
+
+.widget {
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+  list-style: none;
+  margin-bottom: 5px;
+  padding: 8px;
+  background: #f4f4f5;
+  font-size: 12px;
+
+  &--hide {
+    display: none;
+  }
+
+  &__icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  &__name {
+    b {
+      margin-right: 5px;
+    }
+  }
+}
+</style>
