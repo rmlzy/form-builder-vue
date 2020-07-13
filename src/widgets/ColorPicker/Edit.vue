@@ -42,39 +42,39 @@
 </template>
 
 <script>
-  import _ from "lodash";
+import _ from "lodash";
 
-  export default {
-    name: "FbColorPickerEdit",
-    props: {
-      visible: Boolean,
-      config: Object,
-    },
-    data() {
-      return {
-        formData: _.cloneDeep(this.config),
-        rules: {
-          label: [{ required: true, message: "必填项" }],
-          name: [{ required: true, message: "必填项" }],
-          type: [{ required: true, message: "必填项" }],
-        },
-      };
-    },
-    watch: {
-      config(newVal, oldVal) {
-        this.formData = _.cloneDeep(newVal);
+export default {
+  name: "FbColorPickerEdit",
+  props: {
+    visible: Boolean,
+    config: Object,
+  },
+  data() {
+    return {
+      formData: _.cloneDeep(this.config),
+      rules: {
+        label: [{ required: true, message: "必填项" }],
+        name: [{ required: true, message: "必填项" }],
+        type: [{ required: true, message: "必填项" }],
       },
+    };
+  },
+  watch: {
+    config(newVal, oldVal) {
+      this.formData = _.cloneDeep(newVal);
     },
-    methods: {
-      save() {
-        this.$refs.form.validate((valid) => {
-          if (!valid) return;
-          this.$emit("ok", _.cloneDeep(this.formData));
-        });
-      },
-      beforeClose() {
-        this.$emit("cancel", {});
-      },
+  },
+  methods: {
+    save() {
+      this.$refs.form.validate((valid) => {
+        if (!valid) return;
+        this.$emit("ok", _.cloneDeep(this.formData));
+      });
     },
-  };
+    beforeClose() {
+      this.$emit("cancel", {});
+    },
+  },
+};
 </script>

@@ -80,8 +80,8 @@ export default {
       this.resetWidget({ index: evt.oldIndex });
     },
     onAddTemplate(schema) {
-      this.addTemplate({ schema})
-    }
+      this.addTemplate({ schema });
+    },
   },
 };
 </script>

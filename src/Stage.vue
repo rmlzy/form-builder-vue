@@ -15,7 +15,6 @@ import { mapMutations } from "vuex";
 import _ from "lodash";
 import Draggable from "vuedraggable";
 import Editable from "./Editable";
-import { genUuid, genWidgetUuid, safeStringify } from "./helper/util";
 
 export default {
   name: "Stage",

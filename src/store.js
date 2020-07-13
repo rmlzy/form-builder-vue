@@ -1,42 +1,14 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import _ from "lodash";
-import templates from "./helper/templates";
 import {
   safeStringify,
+  initWidgets,
+  initTemplates,
   findAndEdit,
   findAndRemove,
-  getWidgetsMeta,
-  genUuid,
-  genWidgetUuid,
   resetSchema,
+  resetWidget,
 } from "./helper/util";
-
-const initWidget = (widget) => {
-  widget = _.cloneDeep(widget);
-  widget.uuid = genWidgetUuid(widget.widget);
-  if (widget.name !== undefined) {
-    widget.name = genUuid();
-  }
-  // 拖拽 Row 控件时, 初始化 Col
-  if (widget.widget === "FbRow") {
-    widget.childes = [
-      { widget: "FbCol", span: 8, uuid: genWidgetUuid("FbCol"), childes: [] },
-      { widget: "FbCol", span: 8, uuid: genWidgetUuid("FbCol"), childes: [] },
-      { widget: "FbCol", span: 8, uuid: genWidgetUuid("FbCol"), childes: [] },
-    ];
-  }
-  return widget;
-};
-
-const initWidgets = () => {
-  const widgets = getWidgetsMeta();
-  return widgets.map((widget) => initWidget(widget)).filter((widget) => widget.widget !== "FbCol");
-};
-
-const initTemplates = () => {
-  return templates;
-};
 
 Vue.use(Vuex);
 
@@ -80,7 +52,7 @@ export default new Vuex.Store({
     },
     resetWidget(state, payload) {
       const { index } = payload;
-      const newWidget = initWidget(state.widgets[index]);
+      const newWidget = resetWidget(state.widgets[index]);
       Vue.set(state.widgets, index, newWidget);
     },
     addTemplate(state, payload) {

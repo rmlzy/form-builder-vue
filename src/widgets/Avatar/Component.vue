@@ -8,13 +8,9 @@
       :shape="config.shape"
       :fit="config.fit"
     />
-    <el-avatar
-      v-if="config.type === 'text'"
-      :size="config.size"
-      :shape="config.shape"
-      :fit="config.fit"
-      >{{ config.text }}</el-avatar
-    >
+    <el-avatar v-if="config.type === 'text'" :size="config.size" :shape="config.shape" :fit="config.fit">{{
+      config.text
+    }}</el-avatar>
   </div>
 </template>
 

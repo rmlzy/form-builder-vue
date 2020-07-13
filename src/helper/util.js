@@ -2,6 +2,7 @@ import _ from "lodash";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import * as Widgets from "../widgets/index";
+import templates from "./templates";
 
 /**
  * 收集所有的表单控件的name字段, 生成 formData 填充到模板中
@@ -130,6 +131,12 @@ export const schema2code = (schema) => {
   </script>`;
 };
 
+/**
+ * 生成表格模拟数据
+ * @param {array} columns 列配置
+ * @param {number} max 数目
+ * @returns {[]}
+ */
 export const genTableMockData = (columns, max) => {
   columns = columns || [];
   const res = [];
@@ -143,18 +150,36 @@ export const genTableMockData = (columns, max) => {
   return res;
 };
 
+/**
+ * 生成 uuid
+ * @returns {string}
+ */
 export const genUuid = () => "R_" + uuidv4().replace(/-/g, "_");
 
+/**
+ * 为组件生成 uuid
+ * @param {string} widgetName
+ * @returns {string}
+ */
 export const genWidgetUuid = (widgetName) => `${widgetName}__${genUuid()}`.replace("Fb", "");
 
-export const genRules = (option) => {
+/**
+ * 生成表单校验规则
+ * @param {object} config 组件配置
+ * @returns {[]}
+ */
+export const genRules = (config) => {
   const rules = [];
-  if (option.required) {
+  if (config.required) {
     rules.push({ required: true, message: "必填项" });
   }
   return rules;
 };
 
+/**
+ * 获取所有的组件
+ * @returns {{}}
+ */
 export const getWidgets = () => {
   const widgets = {};
   const metas = Object.keys(Widgets).filter((name) => !name.endsWith("Meta") && !name.endsWith("Text"));
@@ -164,18 +189,61 @@ export const getWidgets = () => {
   return widgets;
 };
 
+/**
+ * 获取所有组件的元数据
+ * @returns {*[]}
+ */
 export const getWidgetsMeta = () => {
   const metas = Object.keys(Widgets).filter((name) => name.endsWith("Meta"));
   return metas.map((name) => Widgets[name]);
 };
 
-export const getWidgetMeta = (widgetName) => Widgets[`${widgetName}Meta`];
-
+/**
+ * 获取组件的文本格式, 用于生成代码
+ * @param {object} config 组件配置
+ * @returns {string}
+ */
 export const getWidgetText = (config) => {
   const textFuc = `${config.widget}Text`;
   return Widgets[textFuc](config);
 };
 
+/**
+ * 初始化组件, 重新生成 uuid
+ * @param widget
+ * @returns {object}
+ */
+export const resetWidget = (widget) => {
+  widget = _.cloneDeep(widget);
+  widget.uuid = genWidgetUuid(widget.widget);
+  if (widget.name !== undefined) {
+    widget.name = genUuid();
+  }
+  // 拖拽 Row 控件时, 初始化 Col
+  if (widget.widget === "FbRow") {
+    widget.childes = [
+      { widget: "FbCol", span: 8, uuid: genWidgetUuid("FbCol"), childes: [] },
+      { widget: "FbCol", span: 8, uuid: genWidgetUuid("FbCol"), childes: [] },
+      { widget: "FbCol", span: 8, uuid: genWidgetUuid("FbCol"), childes: [] },
+    ];
+  }
+  return widget;
+};
+
+export const initWidgets = () => {
+  const widgets = getWidgetsMeta();
+  return widgets.map((widget) => resetWidget(widget)).filter((widget) => widget.widget !== "FbCol");
+};
+
+export const initTemplates = () => {
+  return templates;
+};
+
+/**
+ * 格式化 json, 便于阅读
+ * @param json
+ * @returns {string}
+ */
 export const safeStringify = (json) => {
   let str;
   try {
@@ -186,6 +254,13 @@ export const safeStringify = (json) => {
   return str;
 };
 
+/**
+ * 在 schema 中寻找某个 uuid 并修改
+ * @param {array} schema
+ * @param {string} uuid
+ * @param {object} config
+ * @returns {array} 新的schema
+ */
 export const findAndEdit = (schema, uuid, config) => {
   schema = _.cloneDeep(schema);
   const editChildesWithNewConfig = (childes, editedUuid, editedConfig) => {
@@ -203,6 +278,12 @@ export const findAndEdit = (schema, uuid, config) => {
   return editChildesWithNewConfig(schema, uuid, config);
 };
 
+/**
+ * 在 schema 中寻找某个 uuid 并删除
+ * @param {array} schema
+ * @param {string} uuid
+ * @returns {array} 新的schema
+ */
 export const findAndRemove = (schema, uuid) => {
   schema = _.cloneDeep(schema);
   const filterChildesWithoutUuid = (childes, removedUuid) => {
@@ -218,6 +299,11 @@ export const findAndRemove = (schema, uuid) => {
   return filterChildesWithoutUuid(schema, uuid);
 };
 
+/**
+ * 为 schema 中所有的控件重新生成 uuid
+ * @param schema
+ * @returns {*}
+ */
 export const resetSchema = (schema) => {
   schema = _.cloneDeep(schema);
   const resetChildes = (childes) => {
@@ -236,7 +322,7 @@ export const resetSchema = (schema) => {
 };
 
 /**
- * Props 转属性
+ * props 转属性
  * @param {object} props
  * @returns {string}
  */
@@ -272,6 +358,11 @@ export const props2Text = (props) => {
   return texts.join(" ");
 };
 
+/**
+ * schema 转代码并格式化
+ * @param {array} schema
+ * @returns {Promise<AxiosResponse<any>>}
+ */
 export const formatCode = (schema) => {
   const code = schema2code(schema);
   return axios({
@@ -281,6 +372,11 @@ export const formatCode = (schema) => {
   }).then((res) => res.data);
 };
 
+/**
+ * 保存代码
+ * @param schema
+ * @returns {Promise<AxiosResponse<any>>}
+ */
 export const save = async (schema) => {
   const code = schema2code(schema);
   const token = getParameterByName("token");
