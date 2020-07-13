@@ -13,6 +13,7 @@ export * from "./Description/index";
 export * from "./Divider/index";
 export * from "./Input/index";
 export * from "./InputNumber/index";
+export * from "./Link/index";
 export * from "./Form/index";
 export * from "./PageHeader/index";
 export * from "./Radio/index";
