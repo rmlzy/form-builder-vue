@@ -4,6 +4,7 @@ export * from "./Breadcrumb/index";
 export * from "./Button/index";
 export * from "./ButtonGroup/index";
 export * from "./Calendar/index";
+export * from "./Card/index";
 export * from "./Checkbox/index";
 export * from "./Col/index";
 export * from "./ColorPicker";
