@@ -59,16 +59,24 @@ export default {
     },
     async setCodeVisible(codeVisible) {
       if (codeVisible) {
-        this.codeLoading = true;
-        const res = await formatCode(this.schema);
-        this.codeLoading = false;
-        if (res.success) {
-          this.code = res.data;
+        try {
+          this.codeLoading = true;
+          const res = await formatCode(this.schema);
+          if (res.success) {
+            this.code = res.data;
+            this.codeVisible = true;
+          } else {
+            this.$message.error(res.message);
+          }
+        } catch (e) {
+          this.$message.error(e.message);
+        } finally {
+          this.codeLoading = false;
         }
       } else {
         this.code = {};
+        this.codeVisible = false;
       }
-      this.codeVisible = codeVisible;
     },
     downloadSchema() {
       fileDownload(safeStringify(this.schema), "schema.json");

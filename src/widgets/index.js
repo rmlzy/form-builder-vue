@@ -2,6 +2,7 @@ export * from "./Alert/index";
 export * from "./Avatar/index";
 export * from "./Breadcrumb/index";
 export * from "./Button/index";
+export * from "./ButtonGroup/index";
 export * from "./Calendar/index";
 export * from "./Checkbox/index";
 export * from "./Col/index";
