@@ -1,7 +1,7 @@
 export default {
   widget: "FbCarousel",
   widgetName: "走马灯",
-  height: 300,
+  height: 400,
   autoplay: true,
   loop: true,
   arrow: "hover",
@@ -10,12 +10,16 @@ export default {
   direction: "horizontal",
   options: [
     {
-      link:
-        "https://poppython.oss-cn-beijing.aliyuncs.com/pdf_report/34cdd4aa-a2fb-4e2a-a4db-d07252c02201__carbon%20%281%29.png",
+      link: "https://1.s91i.faiusr.com/4/AFsI1ZObARAEGAAgsumv_AUom_SIhAIwhAc4-wI!1000x300.png",
     },
     {
-      link:
-        "https://poppython.oss-cn-beijing.aliyuncs.com/pdf_report/18b9b13c-d153-43e2-b5f5-4d1b572e7beb__code2img%20%281%29.png",
+      link: "https://1.s91i.faiusr.com/4/AFsI1ZObARAEGAAg-Oqv_AUoy5_BpwQwhAc4-wI!1000x300.png",
+    },
+    {
+      link: "https://1.s91i.faiusr.com/4/AFsIABAEGAAgprn35wUosMb_igEwhAc4-wI!1000x300.png",
+    },
+    {
+      link: "https://1.s91i.faiusr.com/4/AFsIABAEGAAg5tSU_AUogqykkQUwhAc4-wI!1000x300.png",
     },
   ],
 };
