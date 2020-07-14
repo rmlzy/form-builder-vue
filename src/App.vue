@@ -2,7 +2,14 @@
   <el-form>
     <div class="layout" @click="() => setSelectedUuid({ uuid: '' })">
       <div class="layout__left">
-        <widgets />
+        <div class="box">
+          <div class="box__item">
+            <folders />
+          </div>
+          <div class="box__item">
+            <widgets />
+          </div>
+        </div>
       </div>
       <div class="layout__mid">
         <div class="layout__mid__hd">
@@ -18,6 +25,7 @@
 
 <script>
 import { mapMutations } from "vuex";
+import Folders from "./Folders.vue";
 import Widgets from "./Widgets.vue";
 import Stage from "./Stage.vue";
 import Actions from "./Actions.vue";
@@ -25,6 +33,7 @@ import Actions from "./Actions.vue";
 export default {
   name: "App",
   components: {
+    Folders,
     Widgets,
     Actions,
     Stage,
@@ -44,17 +53,27 @@ export default {
   left: 0;
   width: 100vw;
   height: 100vh;
-  padding: 0 0 0 200px;
+  padding: 0 0 0 300px;
 
   &__left {
     position: absolute;
     top: 0;
     left: 0;
-    width: 200px;
+    width: 300px;
     height: 100%;
     padding: 10px 0 10px 10px;
-    overflow-x: hidden;
-    overflow-y: auto;
+
+    .box {
+      position: relative;
+      width: 100%;
+      height: 100%;
+
+      &__item {
+        width: 100%;
+        height: 50%;
+        overflow-y: hidden;
+      }
+    }
   }
 
   &__mid {

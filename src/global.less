@@ -179,3 +179,24 @@ pre {
     }
   }
 }
+
+.side {
+  position: relative;
+  margin: -10px;
+  height: calc(50vh - 70px);
+  padding-top: 38px;
+
+  &__hd {
+    position: absolute;
+    top: 3px;
+    left: 0;
+    z-index: 20;
+    width: 100%;
+    height: 38px;
+  }
+
+  &__bd {
+    height: 100%;
+    overflow-y: auto;
+  }
+}

@@ -3,7 +3,7 @@
     <el-tab-pane label="控件" name="widgets">
       <div class="side">
         <div class="side__hd">
-          <el-input v-model="widgetKeyword" size="small" placeholder="输入关键字查询" clearable />
+          <el-input v-model="widgetKeyword" size="mini" placeholder="输入关键字查询" clearable />
         </div>
         <div class="side__bd">
           <draggable
@@ -29,7 +29,7 @@
     <el-tab-pane label="模板" name="templates">
       <div class="side">
         <div class="side__hd">
-          <el-input v-model="templateKeyword" size="small" placeholder="输入关键字查询" clearable />
+          <el-input v-model="templateKeyword" size="mini" placeholder="输入关键字查询" clearable />
         </div>
         <div class="side__bd">
           <div
@@ -87,24 +87,6 @@ export default {
 </script>
 
 <style lang="less">
-.side {
-  position: relative;
-  margin: -10px;
-  height: calc(100vh - 70px);
-  padding-top: 42px;
-
-  &__hd {
-    position: absolute;
-    top: 3px;
-    left: 0;
-    z-index: 20;
-  }
-
-  &__bd {
-    height: 100%;
-    overflow-y: auto;
-  }
-}
 
 .widget {
   position: relative;

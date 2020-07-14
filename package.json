@@ -19,6 +19,7 @@
     "vuex": "^3.5.1"
   },
   "devDependencies": {
+    "@vue/babel-preset-jsx": "^1.1.2",
     "@vue/cli-plugin-babel": "~4.4.0",
     "@vue/cli-plugin-eslint": "~4.4.0",
     "@vue/cli-service": "~4.4.0",
