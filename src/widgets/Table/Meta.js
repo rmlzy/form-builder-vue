@@ -1,7 +1,7 @@
 export default {
   widget: "FbTable",
   widgetName: "表格",
-  border: false,
+  border: true,
   size: "",
   stripe: false,
   "show-header": true,

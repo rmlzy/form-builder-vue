@@ -11,6 +11,7 @@ export * from "./ColorPicker";
 export * from "./DatePicker/index";
 export * from "./DateTimePicker/index";
 export * from "./Description/index";
+export * from "./Dialog/index";
 export * from "./Divider/index";
 export * from "./Input/index";
 export * from "./InputNumber/index";

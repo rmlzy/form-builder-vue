@@ -6,8 +6,7 @@ export default (config) => {
   tableProps.data = config.mockData;
   const selectionText = config.showSelection ? `<el-table-column type="selection" />` : "";
   const columnTexts = config.columns.map((col) => {
-    const colProps = _.pick(col, ["col", "label", "fixed", "sortable"]);
-    colProps.prop = col.name;
+    const colProps = _.pick(col, ["col", "label", "fixed", "sortable", "prop"]);
     return `<el-table-column ${props2Text(colProps)} />`;
   });
   let paginationText;
@@ -19,21 +18,19 @@ export default (config) => {
       "hide-on-single-page",
     ]);
     paginationText = `
-  <div style="text-align: right;">
-    <br />
+  <div style="text-align: right; margin: 15px 0;">
     <el-pagination 
       ${props2Text(paginationProps)}
       :total="total" 
-      :current-page="currentPage"
+      :current-page="page"
       :page-sizes="[10, 20, 30, 50, 100]"
       @size-change="onSizeChange" 
-      @current-change="onCurrentChange"
+      @current-change="onPageChange"
     />
   </div>`;
   }
-  console.log(tableProps);
   return `
-  <el-table :loading="loading" ${props2Text(tableProps)}>
+  <el-table style="margin: 15px 0;" :loading="loading" ${props2Text(tableProps)}>
     ${selectionText}
     ${columnTexts.join("\n")}
   </el-table>

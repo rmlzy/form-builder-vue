@@ -3,28 +3,7 @@ import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import * as Widgets from "../widgets/index";
 import templates from "./templates";
-
-/**
- * 收集所有的表单控件的name字段, 生成 formData 填充到模板中
- * @param {array} schema
- * @returns {object}
- */
-const _collectFormData = (schema) => {
-  const formData = {};
-  schema = _.cloneDeep(schema);
-  const findChildWithName = (childes) => {
-    childes.forEach((child) => {
-      if (child.name) {
-        formData[child.name] = "";
-      }
-      if (_.isArray(child.childes)) {
-        findChildWithName(child.childes);
-      }
-    });
-  };
-  findChildWithName(schema);
-  return formData;
-};
+import schema2code from "./schema2code";
 
 /**
  * 获取页面参数
@@ -41,125 +20,6 @@ export const getParameterByName = (name, url) => {
   if (!results) return null;
   if (!results[2]) return "";
   return decodeURIComponent(results[2].replace(/\+/g, " "));
-};
-
-/**
- * 生成 Vue 文件
- * @param {array} schema
- * @returns {string}
- */
-export const schema2code = (schema) => {
-  const codes = [];
-  schema.forEach((block) => {
-    codes.push(getWidgetText(block));
-  });
-  const template = codes.join("\n");
-  const data = {};
-  const methods = [];
-  const mounted = [];
-
-  // 解析formData
-  if (template.includes("<el-form")) {
-    data.formData = _collectFormData(schema);
-  }
-
-  // 注入表格相关的方法
-  if (template.includes("<el-table")) {
-    data.formData = data.formData || {};
-    data.formData.page = 1;
-    data.formData.size = 10;
-    data.list = [];
-    data.total = 0;
-    data.loading = false;
-    methods.push(`
-    /**
-     * 查询
-     */
-    search() {
-      this.formData.page = 1;
-      this.fetchTableData();
-    },`);
-    methods.push(`
-    /**
-     * 重置
-     */
-    reset() {
-      this.formData.page = 1;
-      this.formData.size = 10;
-      this.$refs.form.resetFields();
-      this.fetchTableData();
-    },`);
-    methods.push(`
-    /**
-     * 获取表格数据
-     * @returns {Promise<*[]>}
-     */
-    async fetchTableData () {
-      /**
-       * TODO: 填充正确的接口地址
-       */
-      this.loading = true;
-      try {
-        const res = await axios({
-          method: "GET",
-          url: "your_awesome_url",
-          params: this.formData
-        });
-        this.list = res.data;
-        this.total = this.list.length;
-      } catch (e) {
-        this.$message.error(e.message);
-      } finally {
-        this.loading = false;
-      }
-    },`);
-    mounted.push(`this.fetchTableData()`);
-  }
-
-  // 注入分页相关的方法
-  if (template.includes("<el-pagination")) {
-    data.currentPage = 1;
-    methods.push(`
-    /**
-     * pageSize 改变时会触发
-     * @param {number} size 新的页长
-     */
-    onSizeChange(size) {
-      this.currentPage = 1;
-      this.size = size;
-      this.fetchTableData();
-    },`);
-    methods.push(`
-    /**
-     * currentPage 改变时会触发
-     * @param {number} currentPage 新的页码
-     */
-    onCurrentChange(currentPage) {
-      this.currentPage = currentPage;
-      this.fetchTableData();
-    },`);
-  }
-  return `
-  <template>
-    <div>
-    ${template}
-    </div>
-  </template>
-  
-  <script>
-  export default {
-    name: "YourAwesomeForm",
-    data() {
-      return ${safeStringify(data)}
-    },
-    mounted() {
-      ${mounted.join("\n")}
-    },
-    methods: {
-      ${methods.join("\n")}
-    },
-  };
-  </script>`;
 };
 
 /**
@@ -394,8 +254,8 @@ export const props2Text = (props) => {
  * @param {array} schema
  * @returns {Promise<AxiosResponse<any>>}
  */
-export const formatCode = (schema) => {
-  const code = schema2code(schema);
+export const formatCode = (schema, pageType) => {
+  const code = schema2code(schema, pageType);
   return axios({
     method: "POST",
     url: "/api/builder/format",

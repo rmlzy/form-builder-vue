@@ -1,6 +1,11 @@
 <template>
   <div>
-<!--    <el-button size="small" plain @click="() => onSetPreviewMode(true)">预览</el-button>-->
+    <!--    <el-button size="small" plain @click="() => onSetPreviewMode(true)">预览</el-button>-->
+    <el-select :value="pageType" size="small" style="margin-right: 10px;" @change="onPageTypeChange">
+      <el-option label="列表页" value="list-page" />
+      <el-option label="表单页" value="form-page" />
+      <el-option label="详情页" value="detail-page" />
+    </el-select>
     <el-button size="small" plain @click="() => setSchemaVisible(true)">查看Schema</el-button>
     <el-button size="small" plain :loading="codeLoading" @click="() => setCodeVisible(true)">查看Code</el-button>
     <el-button size="small" type="primary" :loading="saveLoading" @click="saveSchema">保存</el-button>
@@ -49,15 +54,18 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["schema", "schemaStr", "previewMode"]),
+    ...mapGetters(["schema", "schemaStr", "previewMode", "pageType"]),
   },
   methods: {
-    ...mapMutations(["setSchema", "setPreviewMode"]),
+    ...mapMutations(["setSchema", "setPreviewMode", "setPageType"]),
     clearSchema() {
       this.setSchema({ schema: [] });
     },
     onSetPreviewMode() {
       this.setPreviewMode({ previewMode: !this.previewMode });
+    },
+    onPageTypeChange(pageType) {
+      this.setPageType({ pageType });
     },
     setSchemaVisible(schemaVisible) {
       this.schemaVisible = schemaVisible;
@@ -66,7 +74,7 @@ export default {
       if (codeVisible) {
         try {
           this.codeLoading = true;
-          const res = await formatCode(this.schema);
+          const res = await formatCode(this.schema, this.pageType);
           if (res.success) {
             this.code = res.data;
             this.codeVisible = true;

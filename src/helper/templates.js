@@ -1,26 +1,9 @@
 const listPageSchema = [
   {
-    widget: "FbBreadcrumb",
-    widgetName: "面包屑",
-    separator: "/",
-    options: [
-      {
-        text: "首页",
-      },
-      {
-        text: "模块A",
-      },
-      {
-        text: "列表页",
-      },
-    ],
-    uuid: "面包屑__R_ba2e9f25_9221_4285_b240_ef8b65dddd5a",
-  },
-  {
     widget: "FbForm",
     widgetName: "表单",
     model: "formData",
-    inline: false,
+    inline: true,
     "label-position": "right",
     "label-width": 100,
     "label-suffix": "：",
@@ -160,7 +143,7 @@ const listPageSchema = [
         uuid: "Row__cfbd63a9_7e46_495e_a8ba_b7f3d8c4ee55",
       },
     ],
-    uuid: "表单__R_18b048b4_bf26_4c3f_94d7_c4eca19610ed",
+    uuid: "表单__R_b96af951_875d_4eee_9a36_a47e083a1031",
   },
   {
     widget: "FbButton",
@@ -170,33 +153,26 @@ const listPageSchema = [
     size: "small",
     icon: "el-icon-plus",
     "native-type": "button",
-    uuid: "按钮__R_7c3a7584_c905_4605_997b_260b3baa01fb",
-  },
-  {
-    widget: "FbAlert",
-    widgetName: "警告",
-    title: "共查询到 100 条数据",
-    type: "success",
-    closable: false,
-    uuid: "警告__R_2254b386_ea6e_42b9_8900_ee13529d2074",
-    "show-icon": true,
+    uuid: "按钮__R_7ff1f9b0_2cc8_4f1b_a823_c465acf5d355",
   },
   {
     widget: "FbTable",
     widgetName: "表格",
-    border: false,
+    border: true,
     size: "",
-    stripe: false,
+    stripe: true,
     "show-header": true,
     "highlight-current-row": false,
     pagination: true,
     paginationConfig: {
       "page-size": 10,
+      background: true,
     },
     columns: [
       {
         prop: "id",
         label: "ID",
+        sortable: true,
       },
       {
         prop: "name",
@@ -215,7 +191,79 @@ const listPageSchema = [
         label: "操作",
       },
     ],
-    uuid: "表格__R_292a849e_4f97_403d_8e24_33364c71d807",
+    uuid: "表格__R_a593cf42_0916_4f6e_8da6_8c33bbfe80b8",
+    mockData: [
+      {
+        id: "模拟数据0",
+        name: "模拟数据0",
+        mobile: "模拟数据0",
+        status: "模拟数据0",
+        action: "模拟数据0",
+      },
+      {
+        id: "模拟数据1",
+        name: "模拟数据1",
+        mobile: "模拟数据1",
+        status: "模拟数据1",
+        action: "模拟数据1",
+      },
+      {
+        id: "模拟数据2",
+        name: "模拟数据2",
+        mobile: "模拟数据2",
+        status: "模拟数据2",
+        action: "模拟数据2",
+      },
+      {
+        id: "模拟数据3",
+        name: "模拟数据3",
+        mobile: "模拟数据3",
+        status: "模拟数据3",
+        action: "模拟数据3",
+      },
+      {
+        id: "模拟数据4",
+        name: "模拟数据4",
+        mobile: "模拟数据4",
+        status: "模拟数据4",
+        action: "模拟数据4",
+      },
+      {
+        id: "模拟数据5",
+        name: "模拟数据5",
+        mobile: "模拟数据5",
+        status: "模拟数据5",
+        action: "模拟数据5",
+      },
+      {
+        id: "模拟数据6",
+        name: "模拟数据6",
+        mobile: "模拟数据6",
+        status: "模拟数据6",
+        action: "模拟数据6",
+      },
+      {
+        id: "模拟数据7",
+        name: "模拟数据7",
+        mobile: "模拟数据7",
+        status: "模拟数据7",
+        action: "模拟数据7",
+      },
+      {
+        id: "模拟数据8",
+        name: "模拟数据8",
+        mobile: "模拟数据8",
+        status: "模拟数据8",
+        action: "模拟数据8",
+      },
+      {
+        id: "模拟数据9",
+        name: "模拟数据9",
+        mobile: "模拟数据9",
+        status: "模拟数据9",
+        action: "模拟数据9",
+      },
+    ],
   },
 ];
 
@@ -477,6 +525,8 @@ const detailPageSchema = [
   },
 ];
 
+const editableTableSchema = [];
+
 export default [
   {
     template: "FbListPage",
@@ -487,5 +537,10 @@ export default [
     template: "FbDetailPage",
     templateName: "详情页",
     schema: detailPageSchema,
+  },
+  {
+    template: "FbEditableTable",
+    templateName: "可编辑表格",
+    schema: editableTableSchema,
   },
 ];
