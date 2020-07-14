@@ -1,7 +1,6 @@
 <template>
   <el-form-item :label="config.label" :prop="config.name" :required="config.required">
     <el-input
-      style="width: 220px;"
       :type="config.type"
       :maxlength="config.maxlength"
       :minlength="config.minlength"

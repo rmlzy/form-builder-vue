@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { getWidgetText, safeStringify } from "./util";
+import { getWidgetText } from "./util";
 
 /**
  * 收集所有的表单控件的name字段, 生成 formData 填充到模板中
@@ -144,6 +144,33 @@ const _genListPage = (schema) => {
     onPageChange(page) {
       this.page = page;
       this.fetchTableData();
+    },`);
+  }
+  if (template.includes("<el-dialog")) {
+    data.dialogVisible = false;
+    methods.push(`
+    /**
+     * 展示对话框
+     */
+    showDialog() {
+      // TODO: 其他逻辑
+      this.dialogVisible = true;
+    },`);
+    methods.push(`
+    /**
+     * 关闭对话框
+     */
+    closeDialog() {
+      // TODO: 其他逻辑
+      this.dialogVisible = false;
+    },`);
+    methods.push(`
+    /**
+     * 对话框点击 "确定"
+     */
+    onDialogOk() {
+      // TODO: 其他逻辑
+      this.closeDialog();
     },`);
   }
   return `

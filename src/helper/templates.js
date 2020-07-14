@@ -525,7 +525,102 @@ const detailPageSchema = [
   },
 ];
 
-const editableTableSchema = [];
+const editableTableSchema = [
+  {
+    widget: "FbButton",
+    widgetName: "按钮",
+    text: "按钮",
+    type: "primary",
+    size: "medium",
+    icon: "el-icon-plus",
+    "native-type": "button",
+    uuid: "按钮__R_9f1e5069_e08a_4b4e_9917_7c8d8fcebdee",
+  },
+  {
+    widget: "FbTable",
+    widgetName: "表格",
+    border: true,
+    size: "",
+    stripe: false,
+    "show-header": true,
+    "highlight-current-row": false,
+    pagination: true,
+    paginationConfig: {
+      "page-size": 10,
+    },
+    columns: [
+      {
+        prop: "id",
+        label: "ID",
+      },
+      {
+        prop: "name",
+        label: "用户名",
+      },
+      {
+        prop: "mobile",
+        label: "手机号",
+      },
+      {
+        prop: "status",
+        label: "状态",
+      },
+      {
+        prop: "action",
+        label: "操作",
+      },
+    ],
+    uuid: "表格__R_d3d53a64_3cec_4118_b772_fc1f9226619e",
+  },
+  {
+    widget: "FbDialog",
+    widgetName: "对话框",
+    title: "编辑用户",
+    width: "50%",
+    showConfirmButton: true,
+    confirmButtonText: "确认",
+    showCancelButton: true,
+    cancelButtonText: "取消",
+    childes: [
+      {
+        widget: "FbForm",
+        widgetName: "表单",
+        model: "formData",
+        inline: false,
+        "label-position": "right",
+        "label-width": 141,
+        "label-suffix": "：",
+        size: "medium",
+        childes: [
+          {
+            widget: "FbInput",
+            widgetName: "输入框",
+            label: "用户名",
+            name: "name",
+            type: "text",
+            placeholder: "请输入",
+            uuid: "Input__R_3ae3164b_e8d8_4f2e_85bd_b2ffec6ffa03",
+            clearable: true,
+            required: true,
+          },
+          {
+            widget: "FbInput",
+            widgetName: "输入框",
+            label: "手机号",
+            name: "mobile",
+            type: "text",
+            placeholder: "请输入",
+            uuid: "Input__R_7ce7a79b_c5be_4840_860a_b53c9edf251c",
+            clearable: true,
+            required: true,
+          },
+        ],
+        uuid: "Form__R_7f61fdd4_861c_4150_9517_fb8a3e7c7252",
+      },
+    ],
+    uuid: "对话框__R_2ffab801_59af_4754_beec_e8e419d065de",
+  },
+];
 
 export default [
   {

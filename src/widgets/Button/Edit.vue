@@ -88,12 +88,12 @@ export default {
       },
       iconList: iconList,
       typeList: [
-        { value: "", label: "默认按钮" },
-        { value: "primary", label: "主要按钮" },
-        { value: "success", label: "成功按钮" },
-        { value: "info", label: "信息按钮" },
-        { value: "warning", label: "警告按钮" },
-        { value: "danger", label: "危险按钮" },
+        { value: "", label: "默认按钮 (白色)" },
+        { value: "primary", label: "主要按钮 (蓝色)" },
+        { value: "success", label: "成功按钮 (绿色)" },
+        { value: "info", label: "信息按钮 (灰色)" },
+        { value: "warning", label: "警告按钮 (黄色)" },
+        { value: "danger", label: "危险按钮 (红色)" },
         { value: "text", label: "文字按钮" },
       ],
     };

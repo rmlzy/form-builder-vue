@@ -18,7 +18,7 @@ export default (config) => {
   const extraText = config.extra ? `<div>${config.extra}</div>` : "";
   return `
   <el-form-item ${props2Text(formItemProps)}>
-    <el-input style="width: 220px;" ${props2Text(inputProps)} />
+    <el-input ${props2Text(inputProps)} />
     ${extraText}
   </el-form-item>`;
 };
