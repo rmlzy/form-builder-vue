@@ -16,6 +16,7 @@ export * from "./Divider/index";
 export * from "./Input/index";
 export * from "./InputNumber/index";
 export * from "./Link/index";
+export * from "./P/index";
 export * from "./Form/index";
 export * from "./Inline/index";
 export * from "./PageHeader/index";

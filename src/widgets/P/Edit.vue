@@ -1,10 +1,10 @@
 <template>
-  <el-drawer title="Title 配置" size="50%" :visible.sync="visible" append-to-body :before-close="beforeClose">
+  <el-drawer title="P 配置" size="50%" :visible.sync="visible" append-to-body :before-close="beforeClose">
     <el-form ref="form" :model="formData" :rules="rules" label-position="top" size="small">
       <el-row :gutter="20">
-        <el-col :span="12">
+        <el-col :span="24">
           <el-form-item label="内容" prop="text">
-            <el-input v-model="formData.text"></el-input>
+            <el-input type="textarea" v-model="formData.text"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -17,7 +17,7 @@
 import _ from "lodash";
 
 export default {
-  name: "FbTitleEdit",
+  name: "FbPEdit",
   props: {
     visible: Boolean,
     config: Object,
