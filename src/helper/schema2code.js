@@ -198,9 +198,93 @@ const _genListPage = (schema) => {
   </script>`;
 };
 
-const _genFormPage = (template) => {};
+const _genFormPage = (schema) => {};
 
-const _genDetailPage = (template) => {};
+const _genDetailPage = (schema) => {
+  const template = _schema2template(schema);
+  const data = {
+    loading: false,
+    detail: {},
+  };
+  const mounted = [];
+  const methods = [];
+  if (template.includes("<el-dialog")) {
+    data.dialogVisible = false;
+    methods.push(`
+    /**
+     * 展示对话框
+     */
+    showDialog() {
+      // TODO: 其他逻辑
+      this.dialogVisible = true;
+    },`);
+    methods.push(`
+    /**
+     * 关闭对话框
+     */
+    closeDialog() {
+      // TODO: 其他逻辑
+      this.dialogVisible = false;
+    },`);
+    methods.push(`
+    /**
+     * 对话框点击 "确定"
+     */
+    onDialogOk() {
+      // TODO: 其他逻辑
+      this.closeDialog();
+    },`);
+  }
+  mounted.push(`this.id = this.$route.params.id;`);
+  mounted.push(`this.fetchDetail();`);
+  methods.push(`
+  /**
+   * 获取详情数据
+   * @returns {Promise<*[]>}
+   */
+  async fetchDetail() {
+    this.loading = true;
+    try {
+      const res = await request({
+        method: "GET",
+        url: "/api/mock/api",
+        params: { id: this.id }
+      });
+      if (res.respCode !== '0000') {
+        this.$message.error(res.respDesc);
+        return;
+      }
+      this.detail = res.data;
+    } catch (e) {
+      this.$message.error(e.message);
+    } finally {
+      this.loading = false;
+    }
+  },`);
+  return `
+  <template>
+    <div>
+      ${template}
+    </div>
+  </template>
+  
+  <script>
+  import request from "@/utils/request";
+  
+  export default {
+    name: "DetailPage",
+    data() {
+      return ${JSON.stringify(data)};
+    },
+    mounted() {
+      ${mounted.join("\n")}
+    },
+    methods: {
+      ${methods.join("\n")}
+    },
+  };
+  </script>`;
+};
 
 /**
  * 生成 Vue 文件
