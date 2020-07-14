@@ -208,6 +208,32 @@ const _genDetailPage = (schema) => {
   };
   const mounted = [];
   const methods = [];
+  mounted.push(`this.id = this.$route.params.id;`);
+  mounted.push(`this.fetchDetail();`);
+  methods.push(`
+  /**
+   * 获取详情数据
+   * @returns {Promise<*[]>}
+   */
+  async fetchDetail() {
+    this.loading = true;
+    try {
+      const res = await request({
+        method: "GET",
+        url: "/api/mock/api",
+        params: { id: this.id }
+      });
+      if (res.respCode !== '0000') {
+        this.$message.error(res.respDesc);
+        return;
+      }
+      this.detail = res.data;
+    } catch (e) {
+      this.$message.error(e.message);
+    } finally {
+      this.loading = false;
+    }
+  },`);
   if (template.includes("<el-dialog")) {
     data.dialogVisible = false;
     methods.push(`
@@ -235,32 +261,6 @@ const _genDetailPage = (schema) => {
       this.closeDialog();
     },`);
   }
-  mounted.push(`this.id = this.$route.params.id;`);
-  mounted.push(`this.fetchDetail();`);
-  methods.push(`
-  /**
-   * 获取详情数据
-   * @returns {Promise<*[]>}
-   */
-  async fetchDetail() {
-    this.loading = true;
-    try {
-      const res = await request({
-        method: "GET",
-        url: "/api/mock/api",
-        params: { id: this.id }
-      });
-      if (res.respCode !== '0000') {
-        this.$message.error(res.respDesc);
-        return;
-      }
-      this.detail = res.data;
-    } catch (e) {
-      this.$message.error(e.message);
-    } finally {
-      this.loading = false;
-    }
-  },`);
   return `
   <template>
     <div>
