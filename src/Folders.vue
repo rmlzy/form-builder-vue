@@ -128,6 +128,25 @@ export default {
   mounted() {
     const { teamId } = this.$route.query;
     this.teamId = teamId;
+    if (!this.teamId) {
+      this.$alert("您暂无团队, 请创建团队或申请加入。", "提示", {
+        type: "warning",
+        showClose: false,
+        showConfirmButton: true,
+        confirmButtonText: "创建团队",
+        showCancelButton: true,
+        cancelButtonText: "申请加入",
+        callback: (action) => {
+          if (action === "confirm") {
+            window.parent.location.href = "/team/new.html";
+          }
+          if (action === "cancel") {
+            window.parent.location.href = "/team/join.html";
+          }
+        },
+      });
+      return;
+    }
     this.getFolders();
   },
   methods: {
@@ -205,7 +224,7 @@ export default {
           const editedFile = { id, label };
           this.folders = editChildInFolders(this.folders, editedFile);
         } else {
-          const newFolder = { id: genUuid(), label: label, isFolder: true, children: [] };
+          const newFolder = { id: genUuid(false), label: label, isFolder: true, children: [] };
           this.folders = pushChildToFolders(this.folders, id, newFolder);
         }
         this.closeFolderDialog();
@@ -232,7 +251,7 @@ export default {
           const editedFile = { id, label };
           this.folders = editChildInFolders(this.folders, editedFile);
         } else {
-          const newFileId = genUuid();
+          const newFileId = genUuid(false);
           const newFile = { id: newFileId, label: label, isFile: true };
           const res = await createEmptyCode(newFileId);
           if (!res.success) {

@@ -46,7 +46,10 @@ export const genTableMockData = (columns, max) => {
  * 生成 uuid
  * @returns {string}
  */
-export const genUuid = () => "R_" + uuidv4().replace(/-/g, "_");
+export const genUuid = (withPrefix = true) => {
+  const uuid = uuidv4().replace(/-/g, "_");
+  return withPrefix ? `R_${uuid}` : uuid;
+};
 
 /**
  * 为组件生成 uuid
