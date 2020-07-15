@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import * as Widgets from "../widgets/index";
 import templates from "./templates";
 import schema2code from "./schema2code";
+import fi from "element-ui/src/locale/lang/fi";
 
 /**
  * 获取页面参数
@@ -154,19 +155,19 @@ export const safeStringify = (json) => {
  */
 export const findAndEdit = (schema, uuid, config) => {
   schema = _.cloneDeep(schema);
-  const editChildesWithNewConfig = (childes, editedUuid, editedConfig) => {
+  const _recursion = (childes, editedUuid, editedConfig) => {
     return childes.map((child) => {
       if (child.uuid === editedUuid) {
         child = editedConfig;
       } else {
         if (_.isArray(child.childes)) {
-          child.childes = editChildesWithNewConfig(child.childes, editedUuid, editedConfig);
+          child.childes = _recursion(child.childes, editedUuid, editedConfig);
         }
       }
       return child;
     });
   };
-  return editChildesWithNewConfig(schema, uuid, config);
+  return _recursion(schema, uuid, config);
 };
 
 /**
@@ -177,17 +178,17 @@ export const findAndEdit = (schema, uuid, config) => {
  */
 export const findAndRemove = (schema, uuid) => {
   schema = _.cloneDeep(schema);
-  const filterChildesWithoutUuid = (childes, removedUuid) => {
+  const _recursion = (childes, removedUuid) => {
     let newChildes = childes.filter((child) => child.uuid !== removedUuid);
     newChildes = newChildes.map((child) => {
       if (_.isArray(child.childes)) {
-        child.childes = filterChildesWithoutUuid(child.childes, removedUuid);
+        child.childes = _recursion(child.childes, removedUuid);
       }
       return child;
     });
     return newChildes;
   };
-  return filterChildesWithoutUuid(schema, uuid);
+  return _recursion(schema, uuid);
 };
 
 /**
@@ -197,19 +198,93 @@ export const findAndRemove = (schema, uuid) => {
  */
 export const resetSchema = (schema) => {
   schema = _.cloneDeep(schema);
-  const resetChildes = (childes) => {
+  const _recursion = (childes) => {
     return childes.map((child) => {
       if (child.uuid) {
         child.uuid = genWidgetUuid(child.widgetName);
       } else {
         if (_.isArray(child.childes)) {
-          child.childes = resetChildes(child.childes);
+          child.childes = _recursion(child.childes);
         }
       }
       return child;
     });
   };
-  return resetChildes(schema);
+  return _recursion(schema);
+};
+
+/**
+ * 添加文件/文件夹
+ * @param {array} folders 文件夹
+ * @param {string | undefined} targetId 目标目录, 如果为空则添加到顶级目录
+ * @param {object} newChild 新的文件/文件夹
+ * @returns {array} 新的文件夹
+ */
+export const pushChildToFolders = (folders, targetId, newChild) => {
+  folders = _.cloneDeep(folders);
+  const _recursion = (children, targetUuid, content) => {
+    if (targetId) {
+      children = children.map((child) => {
+        if (child.id === targetUuid) {
+          child.children = child.children || [];
+          child.children.push(content);
+        } else {
+          if (_.isArray(child.children)) {
+            child.children = _recursion(child.children, targetUuid, content);
+          }
+        }
+        return child;
+      });
+    } else {
+      children.push(newChild);
+    }
+    return children;
+  };
+  return _recursion(folders, targetId, newChild);
+};
+
+/**
+ * 编辑文件/文件夹
+ * @param {array} folders 文件夹
+ * @param {object} editChild 新的文件/文件夹
+ * @returns {array} 新的文件夹
+ */
+export const editChildInFolders = (folders, editChild) => {
+  folders = _.cloneDeep(folders);
+  const _recursion = (children, content) => {
+    return children.map((child) => {
+      if (child.id === content.id) {
+        child.label = content.label;
+      } else {
+        if (_.isArray(child.children)) {
+          child.children = _recursion(child.children, content);
+        }
+      }
+      return child;
+    });
+  };
+  return _recursion(folders, editChild);
+};
+
+/**
+ * 删除文件/文件夹
+ * @param {array} folders 文件夹
+ * @param {string} removeId 目标ID
+ * @returns {array} 新的文件夹
+ */
+export const removeChildInFolders = (folders, removeId) => {
+  folders = _.cloneDeep(folders);
+  const _recursion = (children, targetId) => {
+    let newChildren = children.filter((child) => child.id !== targetId);
+    newChildren = newChildren.map((child) => {
+      if (_.isArray(child.children)) {
+        child.children = _recursion(child.children, targetId);
+      }
+      return child;
+    });
+    return newChildren;
+  };
+  return _recursion(folders, removeId);
 };
 
 /**
@@ -247,41 +322,4 @@ export const props2Text = (props) => {
     console.log(`key: ${key}, value: ${value} will be ignore!`);
   }
   return texts.join(" ");
-};
-
-/**
- * schema 转代码并格式化
- * @param {array} schema
- * @returns {Promise<AxiosResponse<any>>}
- */
-export const formatCode = (schema, pageType) => {
-  const code = schema2code(schema, pageType);
-  return axios({
-    method: "POST",
-    url: "/api/builder/format",
-    data: { code, type: "VUE" },
-  }).then((res) => res.data);
-};
-
-/**
- * 保存代码
- * @param schema
- * @returns {Promise<AxiosResponse<any>>}
- */
-export const save = async (schema) => {
-  const code = schema2code(schema);
-  const token = getParameterByName("token");
-  if (!token) {
-    return Promise.reject(new Error("未登录"));
-  }
-  return axios({
-    method: "POST",
-    url: "/api/builder/save",
-    data: {
-      type: "VUE",
-      schema,
-      code,
-      token,
-    },
-  }).then((res) => res.data);
 };

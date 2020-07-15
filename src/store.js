@@ -22,6 +22,7 @@ export default new Vuex.Store({
     editedUuid: "",
     previewMode: false,
     pageType: "list-page",
+    currentFileId: "",
   }),
   getters: {
     widgets: (state) => state.widgets,
@@ -32,6 +33,7 @@ export default new Vuex.Store({
     templates: (state) => state.templates,
     previewMode: (state) => state.previewMode,
     pageType: (state) => state.pageType,
+    currentFileId: (state) => state.currentFileId,
   },
   mutations: {
     setSchema(state, payload) {
@@ -57,6 +59,10 @@ export default new Vuex.Store({
     setPageType(state, payload) {
       const { pageType } = payload;
       state.pageType = pageType;
+    },
+    setCurrentFileId(state, payload) {
+      const { currentFileId } = payload;
+      state.currentFileId = currentFileId;
     },
     removeWidget(state, payload) {
       const { uuid } = payload;

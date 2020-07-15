@@ -11,12 +11,20 @@
           </div>
         </div>
       </div>
-      <div class="layout__mid">
+      <div :class="{ layout__mid: true, 'has-hd': currentFileId }">
         <div class="layout__mid__hd">
           <actions />
         </div>
-        <div class="layout__mid__bd">
+        <div v-if="currentFileId" class="layout__mid__bd has-bg">
           <stage />
+        </div>
+        <div v-else class="layout__mid__bd">
+          <div class="empty">
+            <div class="empty__tip">
+              <i class="el-icon-warning-outline"></i>
+              <span>请选择或新建文件</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -24,7 +32,7 @@
 </template>
 
 <script>
-import { mapMutations } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 import Folders from "./Folders.vue";
 import Widgets from "./Widgets.vue";
 import Stage from "./Stage.vue";
@@ -37,6 +45,9 @@ export default {
     Widgets,
     Actions,
     Stage,
+  },
+  computed: {
+    ...mapGetters(["currentFileId"]),
   },
   methods: {
     ...mapMutations(["setSelectedUuid"]),
@@ -80,7 +91,11 @@ export default {
     position: relative;
     width: 100%;
     height: 100%;
-    padding: 52px 10px 0;
+    padding: 10px;
+
+    &.has-hd {
+      padding-top: 52px;
+    }
 
     &__hd {
       position: absolute;
@@ -95,13 +110,31 @@ export default {
       border: 1px solid #ddd;
       overflow-y: auto;
       box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.1);
-      background-image: radial-gradient(#f5f5f5 1px, transparent 1px);
-      background-size: calc(10 * 1px) calc(10 * 1px);
-      background-color: #fff;
+
+      &.has-bg {
+        background-image: radial-gradient(#f5f5f5 1px, transparent 1px);
+        background-size: calc(10 * 1px) calc(10 * 1px);
+        background-color: #fff;
+      }
 
       & > .stage {
         width: 100%;
         height: 100%;
+      }
+
+      .empty {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+
+        &__tip {
+          i {
+            margin-right: 5px;
+          }
+        }
       }
     }
   }

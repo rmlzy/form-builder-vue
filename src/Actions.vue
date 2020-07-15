@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="currentFileId">
     <!--    <el-button size="small" plain @click="() => onSetPreviewMode(true)">预览</el-button>-->
     <el-select :value="pageType" size="small" style="margin-right: 10px;" @change="onPageTypeChange">
       <el-option label="列表页" value="list-page" />
@@ -38,7 +38,8 @@
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
-import { formatCode, safeStringify, save } from "./helper/util";
+import { safeStringify } from "./helper/util";
+import { formatCode, saveSchema } from "./helper/service";
 import fileDownload from "js-file-download";
 
 export default {
@@ -54,7 +55,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["schema", "schemaStr", "previewMode", "pageType"]),
+    ...mapGetters(["schema", "schemaStr", "previewMode", "pageType", "currentFileId"]),
   },
   methods: {
     ...mapMutations(["setSchema", "setPreviewMode", "setPageType"]),
@@ -100,7 +101,7 @@ export default {
     async saveSchema() {
       this.saveLoading = true;
       try {
-        const res = await save(this.schema);
+        const res = await saveSchema(this.currentFileId, this.schema);
         if (res.success) {
           this.$message.success(res.message);
         } else {
