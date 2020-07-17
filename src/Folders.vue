@@ -155,11 +155,18 @@ export default {
       this.activeNode = node;
       if (node.isFolder) return;
       this.setCurrentFileId({ currentFileId: node.id });
-      const res = await getSchema(node.id);
-      if (res.success) {
-        this.setSchema({ schema: res.data.schema });
-      } else {
-        this.$message.error(res.message);
+      const loading = this.$loading();
+      try {
+        const res = await getSchema(node.id);
+        if (res.success) {
+          this.setSchema({ schema: res.data.schema });
+        } else {
+          this.$message.error(res.message);
+        }
+      } catch (e) {
+        this.$message.error(e.message);
+      } finally {
+        loading.close();
       }
     },
 
@@ -200,6 +207,7 @@ export default {
           if (action === "confirm") {
             this.folders = removeChildInFolders(this.folders, id);
             this.saveFolders();
+            this.onClickOutside();
           }
         },
       });

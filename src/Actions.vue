@@ -21,14 +21,14 @@
     </el-popconfirm>
 
     <el-dialog title="Schema" :visible.sync="schemaVisible" top="5%" width="70%" append-to-body>
-      <pre><code>{{ schemaStr }}</code></pre>
+      <prism-editor :code="schemaStr" language="js"></prism-editor>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="downloadSchema">下载</el-button>
       </span>
     </el-dialog>
 
     <el-dialog title="Code" :visible.sync="codeVisible" top="5%" width="70%" append-to-body>
-      <pre><code>{{ code.text }}</code></pre>
+      <prism-editor :code="code.text" language="vue"></prism-editor>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="downloadVue">下载</el-button>
       </span>

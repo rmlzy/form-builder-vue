@@ -11,7 +11,7 @@ export const formatCode = (schema, pageType) => {
   const code = schema2code(schema, pageType);
   return axios({
     method: "POST",
-    url: "/api/builder/format",
+    url: "/api/code/format",
     data: { code, type: "VUE" },
   }).then((res) => res.data);
 };
