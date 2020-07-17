@@ -87,7 +87,6 @@ export default {
 </script>
 
 <style lang="less">
-
 .widget {
   position: relative;
   cursor: pointer;

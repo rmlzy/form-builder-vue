@@ -1,10 +1,7 @@
 import _ from "lodash";
-import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import * as Widgets from "../widgets/index";
 import templates from "./templates";
-import schema2code from "./schema2code";
-import fi from "element-ui/src/locale/lang/fi";
 
 /**
  * 获取页面参数
@@ -56,7 +53,9 @@ export const genUuid = (withPrefix = true) => {
  * @param {string} widgetName
  * @returns {string}
  */
-export const genWidgetUuid = (widgetName) => `${widgetName}__${genUuid()}`.replace("Fb", "");
+export const genWidgetUuid = (widgetName) => {
+  return `${widgetName}__${genUuid()}`.replace("Fb", "");
+};
 
 /**
  * 生成表单校验规则
@@ -111,6 +110,7 @@ export const getWidgetText = (config) => {
 export const resetWidget = (widget) => {
   widget = _.cloneDeep(widget);
   widget.uuid = genWidgetUuid(widget.widget);
+  // 为表单控件生成随机的 name
   if (widget.name !== undefined) {
     widget.name = genUuid();
   }
@@ -131,7 +131,7 @@ export const initWidgets = () => {
 };
 
 export const initTemplates = () => {
-  return templates;
+  return templates.map((template) => resetSchema(template));
 };
 
 /**
@@ -196,8 +196,8 @@ export const findAndRemove = (schema, uuid) => {
 
 /**
  * 为 schema 中所有的控件重新生成 uuid
- * @param schema
- * @returns {*}
+ * @param {array} schema
+ * @returns {array} 新的schema
  */
 export const resetSchema = (schema) => {
   schema = _.cloneDeep(schema);

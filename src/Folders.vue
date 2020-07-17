@@ -54,7 +54,13 @@
       append-to-body
       :before-close="closeFolderDialog"
     >
-      <el-form ref="createFolderForm" :model="createFolderForm" :rules="createFolderRules" label-width="120px">
+      <el-form
+        ref="createFolderForm"
+        :model="createFolderForm"
+        :rules="createFolderRules"
+        label-width="120px"
+        @submit.native.prevent="createFolder"
+      >
         <el-form-item label="文件夹名称" prop="label">
           <el-input v-model="createFolderForm.label" />
         </el-form-item>
@@ -71,7 +77,13 @@
       append-to-body
       :before-close="closeFileDialog"
     >
-      <el-form ref="createFileForm" :model="createFileForm" :rules="createFileRules" label-width="120px">
+      <el-form
+        ref="createFileForm"
+        :model="createFileForm"
+        :rules="createFileRules"
+        label-width="120px"
+        @submit.native.prevent="createFile"
+      >
         <el-form-item label="文件名称" prop="label">
           <el-input v-model="createFileForm.label" />
         </el-form-item>

@@ -14,6 +14,7 @@ Vue.config.productionTip = false;
 Vue.use(VueRouter);
 Vue.use(ElementUI);
 
+// global component
 Vue.component("prism-editor", VuePrismEditor);
 
 const router = new VueRouter({ routes });

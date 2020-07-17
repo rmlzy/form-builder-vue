@@ -72,7 +72,7 @@
 
 <script>
 import _ from "lodash";
-import iconList from "../../helper/icons"
+import iconList from "../../helper/icons";
 
 export default {
   name: "FbButtonEdit",
