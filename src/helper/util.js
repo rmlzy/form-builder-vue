@@ -131,7 +131,10 @@ export const initWidgets = () => {
 };
 
 export const initTemplates = () => {
-  return templates.map((template) => resetSchema(template));
+  return templates.map((template) => {
+    template.schema = resetSchema(template.schema);
+    return template;
+  });
 };
 
 /**
