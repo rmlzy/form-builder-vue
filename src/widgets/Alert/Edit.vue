@@ -23,7 +23,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="关闭按钮自定义文本" prop="close-text">
-            <el-switch v-model="formData['close-text']" />
+            <el-input v-model="formData['close-text']" />
           </el-form-item>
         </el-col>
       </el-row>
