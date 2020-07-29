@@ -314,7 +314,12 @@ export const props2Text = (props) => {
       continue;
     }
     if (_.isBoolean(value)) {
-      texts.push(`:${key}='${value}'`);
+      // 支持属性的简写写法
+      if (value) {
+        texts.push(key);
+      } else {
+        texts.push(`:${key}='${value}'`);
+      }
       continue;
     }
     if (_.isString(value)) {

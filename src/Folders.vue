@@ -167,7 +167,7 @@ export default {
       this.activeNode = node;
       if (node.isFolder) return;
       this.setCurrentFileId({ currentFileId: node.id });
-      const loading = this.$loading();
+      const loading = this.$loading({ background: "transparent" });
       try {
         const res = await getSchema(node.id);
         if (res.success) {
