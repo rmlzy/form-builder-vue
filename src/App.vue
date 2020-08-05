@@ -65,6 +65,7 @@ export default {
   width: 100vw;
   height: 100vh;
   padding: 0 0 0 300px;
+  background: #eeeeee;
 
   &__left {
     position: absolute;
@@ -107,9 +108,9 @@ export default {
 
     &__bd {
       height: 100%;
-      border: 1px solid #ddd;
       overflow-y: auto;
-      box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.1);
+      background: #fff;
+      box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
 
       &.has-bg {
         background-image: radial-gradient(#f5f5f5 1px, transparent 1px);

@@ -19,7 +19,6 @@
           name: 'widget',
         },
         ghostClass: 'sortable__ghost',
-        animation: 200,
         handle: '.form-child',
       }"
       @add="addChild"

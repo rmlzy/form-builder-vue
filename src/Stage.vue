@@ -2,7 +2,7 @@
   <draggable
     :class="{ stage: true, 'stage--preview': previewMode }"
     v-model="schema"
-    v-bind="{ group: 'widget', ghostClass: 'sortable__ghost', animation: 200, handle: '.stage-child' }"
+    v-bind="{ group: 'widget', ghostClass: 'sortable__ghost', handle: '.stage-child' }"
   >
     <editable handle-class="stage-child" v-for="(block, index) in schema" :key="index" :config="getCopy(block)" />
   </draggable>
